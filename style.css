@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.screen {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  border: 3px solid #333;
+}
+
+.left, .right {
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.left {
+  width: 50%;
+  border-right: 2px solid #444;
+}
+
+.right {
+  width: 50%;
+  border-left: 2px solid #444;
+}
+
+h1, h2 {
+  font-weight: bold;
+  border-bottom: 2px solid #444;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  margin: 0.5rem 0;
+  color: #00ff00;
+}
+
+ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul li a:hover {
+  text-decoration: underline;
+}
+
+.badges span {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  margin: 0.2rem;
+  background: #111;
+  border: 1px solid #888;
+  font-size: 0.9rem;
+}
+
+a {
+  color: #ccc;
+}
+
+a:hover {
+  color: #fff;
+}
+
+.lastfm {
+  position: absolute;
+  bottom: 10px;
+  width: calc(50% - 2rem);
+  font-size: 0.85rem;
+  border-top: 2px solid #333;
+  padding-top: 0.5rem;
+}
+
+.lastfm strong {
+  color: #ff0050;
+}
+
+.track {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.track img {
+  width: 50px;
+  height: 50px;
+}
+
+.track div {
+  line-height: 1.2;
+}
+
+/* CRT EFFECT */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.02) 2px);
+  pointer-events: none;
+  z-index: 999;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.1);
+  animation: flicker 0.2s infinite;
+  pointer-events: none;
+  z-index: 998;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.2; }
+}
