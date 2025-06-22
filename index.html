@@ -63,54 +63,18 @@
     }
 
     @keyframes vhsFlash {
-      0% { 
-        opacity: 0; 
-        background: #fff;
-      }
-      10% { 
-        opacity: 0.9; 
-        background: #fff;
-      }
-      15% { 
-        opacity: 0.7; 
-        background: #f0f0ff;
-      }
-      25% { 
-        opacity: 0.5; 
-        background: #e0e0ff;
-      }
-      35% { 
-        opacity: 0.8; 
-        background: #fff;
-      }
-      45% { 
-        opacity: 0.3; 
-        background: #f5f5ff;
-      }
-      55% { 
-        opacity: 0.6; 
-        background: #fff;
-      }
-      65% { 
-        opacity: 0.2; 
-        background: #f8f8ff;
-      }
-      75% { 
-        opacity: 0.4; 
-        background: #fff;
-      }
-      85% { 
-        opacity: 0.1; 
-        background: #fafafa;
-      }
-      95% { 
-        opacity: 0.05; 
-        background: #fcfcfc;
-      }
-      100% { 
-        opacity: 0; 
-        background: transparent;
-      }
+      0% { opacity: 0; background: #fff; }
+      10% { opacity: 0.9; background: #fff; }
+      15% { opacity: 0.7; background: #f0f0ff; }
+      25% { opacity: 0.5; background: #e0e0ff; }
+      35% { opacity: 0.8; background: #fff; }
+      45% { opacity: 0.3; background: #f5f5ff; }
+      55% { opacity: 0.6; background: #fff; }
+      65% { opacity: 0.2; background: #f8f8ff; }
+      75% { opacity: 0.4; background: #fff; }
+      85% { opacity: 0.1; background: #fafafa; }
+      95% { opacity: 0.05; background: #fcfcfc; }
+      100% { opacity: 0; background: transparent; }
     }
 
     #main-content {
@@ -126,7 +90,7 @@
     #main-content.show {
       opacity: 1;
     }
-    
+
     .screen {
       display: flex;
       width: 100%;
@@ -134,8 +98,8 @@
       height: 90vh;
       border: 8px solid #333;
       box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8),
-                  0 0 30px rgba(228, 230, 228, 0.3),
-                  0 0 60px rgba(127, 129, 127, 0.2);
+        0 0 30px rgba(228, 230, 228, 0.3),
+        0 0 60px rgba(127, 129, 127, 0.2);
       position: relative;
       background: #111;
     }
@@ -152,13 +116,47 @@
 
     .right {
       flex: 1;
-      padding: 2rem;
       background: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      position: relative;
+    }
+
+    .right-header {
+      width: 100%;
+      background: #0a0a0a;
+      border-bottom: 2px solid #333;
+      padding: 0.5rem 0;
+      overflow: hidden;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    #right-panel-title {
+      margin-bottom: 0;
+      font-size: 2.5rem;
+      text-shadow: 0 0 15px #fff;
+      letter-spacing: 0.3rem;
+      white-space: nowrap;
+      display: inline-block;
+      animation: marquee 15s linear infinite;
+    }
+
+    .content-panel {
+      flex-grow: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 2rem;
       text-align: center;
+    }
+
+    @keyframes marquee {
+      0%   { transform: translateX(100%); }
+      100% { transform: translateX(-110%); }
     }
 
     .site-title {
@@ -182,6 +180,7 @@
       color: rgb(215, 226, 215);
       text-decoration: none;
       text-shadow: 0 0 5px rgb(225, 232, 225);
+      cursor: pointer;
     }
 
     .nav-menu a:hover {
@@ -246,6 +245,17 @@
       max-width: 400px;
     }
 
+    #static-gif {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 20;
+    }
+
     @keyframes glitch {
       0%, 100% { transform: translateX(0); filter: hue-rotate(0deg); }
       10% { transform: translateX(-2px); }
@@ -264,7 +274,6 @@
       50% { opacity: 0.8; text-shadow: 0 0 5px rgb(255, 255, 255); }
     }
 
-    /* CRT EFFECT */
     body::before {
       content: "";
       position: absolute;
@@ -299,19 +308,23 @@
       body {
         padding: 1rem;
       }
+
       #main-content {
         padding: 0;
       }
+
       .screen {
         flex-direction: column;
         height: 100vh;
         border: none;
       }
+
       .left, .right {
         border-right: none;
         border-bottom: 2px solid #333;
       }
-      .welcome-title { font-size: 2rem; }
+
+      #right-panel-title { font-size: 2rem; }
       .site-title { font-size: 1.5rem; }
     }
   </style>
@@ -326,6 +339,7 @@
 
   <audio id="pause-sound" src="Pause.wav"></audio>
   <audio id="vhs-audio" src="StaticVHS.wav" loop></audio>
+  <audio id="static-sound" src="Static.wav"></audio>
 
   <div id="main-content">
     <div class="screen">
@@ -333,11 +347,10 @@
         <div>
           <h1 class="site-title">[atvn.bfn]</h1>
           <ul class="nav-menu">
-            <li>> <a href="#about">about me</a></li>
-            <li>> <a href="#projects">projects</a></li>
+            <li>> <a data-target="about-content" data-title="ABOUT ME">about me</a></li>
+            <li>> <a data-target="projects-content" data-title="PROJECTS">projects</a></li>
           </ul>
         </div>
-        
         <div class="now-playing">
           <div class="player-status">rec last.fm</div>
           <div class="track-info">
@@ -349,76 +362,123 @@
           </div>
         </div>
       </div>
-      
+
       <div class="right">
-        <h1 class="welcome-title">NO SIGNAL</h1>
-        <div class="welcome-text">
-          welcome to atvn.bfn!<br><br>
-          click on either "about me" or "projects" for more
+        <div class="right-header">
+          <h1 id="right-panel-title">NO SIGNAL</h1>
         </div>
+
+        <div id="no-signal-content" class="content-panel">
+          <div class="welcome-text">
+            welcome to atvn.bfn!<br><br>
+            click on either "about me" or "projects" for more
+          </div>
+        </div>
+
+        <div id="about-content" class="content-panel" style="display: none;">
+          <div class="welcome-text">
+            Esta é a seção sobre mim. <br>
+            Aqui você pode adicionar qualquer informação que desejar.
+          </div>
+        </div>
+        
+        <div id="projects-content" class="content-panel" style="display: none;">
+          <div class="welcome-text">
+            Lista dos meus projetos.<br><br>
+            - Projeto 1 <br>
+            - Projeto 2
+          </div>
+        </div>
+
+        <img id="static-gif" src="static.gif" alt="Static effect">
       </div>
     </div>
   </div>
 
- <script>
-  const splashScreen = document.getElementById('splash-screen');
-  const mainContent = document.getElementById('main-content');
-  const vhsFlash = document.getElementById('vhs-flash');
-  const pauseSound = document.getElementById('pause-sound');
-  const vhsAudio = document.getElementById('vhs-audio');
+  <script>
+    const splashScreen = document.getElementById('splash-screen');
+    const mainContent = document.getElementById('main-content');
+    const vhsFlash = document.getElementById('vhs-flash');
+    const pauseSound = document.getElementById('pause-sound');
+    const vhsAudio = document.getElementById('vhs-audio');
+    const staticSound = document.getElementById('static-sound');
+    const staticGif = document.getElementById('static-gif');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    const contentPanels = document.querySelectorAll('.content-panel');
+    const rightPanelTitle = document.getElementById('right-panel-title');
 
-  function startSite() {
-    pauseSound.play();
-    
-    splashScreen.style.display = 'none';
-    
-    vhsFlash.style.display = 'block';
-    vhsFlash.classList.add('flash-animation');
-    
-    // conteudo principal aparece depois de um delay
-    setTimeout(() => {
-      mainContent.style.display = 'flex';
-      
-      // delay de transição
+    function startSite() {
+      pauseSound.play();
+      splashScreen.style.display = 'none';
+      vhsFlash.style.display = 'block';
+      vhsFlash.classList.add('flash-animation');
+
       setTimeout(() => {
-        mainContent.classList.add('show');
-      }, 50);
-      
-      setTimeout(() => {
-        vhsFlash.style.display = 'none';
-        vhsFlash.classList.remove('flash-animation');
-      }, 100);
-      
-    }, 200); // delay pra sincronizat
+        mainContent.style.display = 'flex';
+        setTimeout(() => {
+          mainContent.classList.add('show');
+        }, 50);
 
-    // depoisqq passar o pause, toca o bagulho do vhs
-    pauseSound.addEventListener('ended', () => {
-      vhsAudio.play();
-    });
-  }
+        setTimeout(() => {
+          vhsFlash.style.display = 'none';
+          vhsFlash.classList.remove('flash-animation');
+        }, 100);
+      }, 200);
 
-  splashScreen.addEventListener('click', startSite, { once: true });
-
-  // pausa do áudio fora da aba
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      vhsAudio.pause();
-    } else {
-      if (mainContent.style.display === 'flex') {
+      pauseSound.addEventListener('ended', () => {
         vhsAudio.play();
-      }
+      });
     }
-  });
 
-  // efeito de mudança de cor aleatória, nao sei se isso vai funcioanar na verdade
-  setInterval(() => {
-    if (Math.random() < 0.1) {
-      document.body.style.filter = 'hue-rotate(' + Math.random() * 360 + 'deg)';
+    splashScreen.addEventListener('click', startSite, { once: true });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        vhsAudio.pause();
+      } else {
+        if (mainContent.style.display === 'flex') {
+          vhsAudio.play();
+        }
+      }
+    });
+
+    setInterval(() => {
+      if (Math.random() < 0.1) {
+        document.body.style.filter = 'hue-rotate(' + Math.random() * 360 + 'deg)';
+        setTimeout(() => {
+          document.body.style.filter = 'none';
+        }, 100);
+      }
+    }, 2000);
+
+    function showContent(targetId, title) {
+      const targetPanel = document.getElementById(targetId);
+      if (!targetPanel) return;
+
+      contentPanels.forEach(panel => {
+        panel.style.display = 'none';
+      });
+
+      rightPanelTitle.textContent = title;
+
+      staticGif.style.display = 'block';
+      staticSound.currentTime = 0;
+      staticSound.play();
+
       setTimeout(() => {
-        document.body.style.filter = 'none';
-      }, 100);
+        staticGif.style.display = 'none';
+        staticSound.pause();
+        targetPanel.style.display = 'flex';
+      }, 300);
     }
-  }, 2000);
-</script>
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const targetId = link.getAttribute('data-target');
+        const title = link.getAttribute('data-title');
+        showContent(targetId, title);
+      });
+    });
+  </script>
 </body>
 </html>
