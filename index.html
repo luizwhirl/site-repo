@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,16 +14,107 @@
       box-sizing: border-box;
     }
 
+    @font-face {
+      font-family: 'VSR';
+      src: url('vsr.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Joystix';
+      src: url('joystix.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     body {
       background: #000;
       color: rgb(230, 241, 230);
-      font-family: 'Share Tech Mono', monospace;
+      font-family: 'VSR', monospace;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 2rem;
       overflow: hidden;
+      position: relative;
+      backdrop-filter: contrast(1.1) brightness(1.1) saturate(1.05);
+      /* Efeito VHS borrado */
+      filter: blur(0.5px) contrast(1.2) brightness(0.95);
+    }
+
+    /* TV de tubo piscando no fundo */
+    #tv-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      background: radial-gradient(
+        ellipse 80% 60% at center, 
+        rgba(0, 100, 150, 0.15) 0%,
+        rgba(0, 50, 100, 0.08) 30%,
+        rgba(0, 20, 50, 0.05) 60%,
+        rgba(0, 0, 0, 0.9) 100%
+      );
+      animation: tvGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes tvGlow {
+      0% {
+        opacity: 0.6;
+        transform: scale(1.02);
+        filter: blur(2px);
+      }
+      25% {
+        opacity: 0.8;
+        transform: scale(1.03);
+        filter: blur(1.5px);
+      }
+      50% {
+        opacity: 0.7;
+        transform: scale(1.025);
+        filter: blur(2.2px);
+      }
+      75% {
+        opacity: 0.85;
+        transform: scale(1.035);
+        filter: blur(1.8px);
+      }
+      100% {
+        opacity: 0.9;
+        transform: scale(1.04);
+        filter: blur(1px);
+      }
+    }
+
+    /* Efeito adicional de borda da TV */
+    #tv-vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: radial-gradient(
+        ellipse 70% 50% at center,
+        transparent 0%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.3) 70%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
+      animation: vignettePulse 4s ease-in-out infinite;
+    }
+
+    @keyframes vignettePulse {
+      0%, 100% {
+        opacity: 0.7;
+      }
+      50% {
+        opacity: 0.9;
+      }
     }
 
     #splash-screen {
@@ -37,13 +129,15 @@
       align-items: center;
       z-index: 1000;
       cursor: pointer;
+      filter: blur(0.8px);
     }
 
     .splash-message {
       color: rgb(223, 230, 223);
       font-size: 1.5rem;
-      text-shadow: 0 0 10px rgb(231, 238, 231);
+      text-shadow: 0 0 10px rgb(231, 238, 231), 0 0 20px rgba(231, 238, 231, 0.5);
       animation: flicker 1.5s infinite;
+      filter: blur(0.3px);
     }
 
     #vhs-flash {
@@ -85,6 +179,7 @@
       align-items: center;
       opacity: 0;
       transition: opacity 0.3s ease-in;
+      filter: blur(0.7px) brightness(0.9);
     }
 
     #main-content.show {
@@ -97,11 +192,36 @@
       max-width: 1200px;
       height: 90vh;
       border: 8px solid #333;
-      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8),
-        0 0 30px rgba(228, 230, 228, 0.3),
-        0 0 60px rgba(127, 129, 127, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      transform: perspective(1200px) scale(1.01);
+      box-shadow: 0 0 40px rgba(255,255,255,0.05) inset,
+            0 0 30px rgba(228, 230, 228, 0.3),
+            0 0 60px rgba(127, 129, 127, 0.2);
       position: relative;
       background: #111;
+      animation: screenFlicker 4s infinite;
+      /* Efeito VHS mais intenso na tela */
+      filter: blur(0.8px) contrast(1.3) saturate(0.8);
+    }
+
+    @keyframes screenFlicker {
+      0%, 98%, 100% { 
+        filter: blur(0.8px) contrast(1.3) saturate(0.8) brightness(1);
+        transform: translateX(0) scale(1.01);
+      }
+      1% { 
+        filter: blur(1.2px) contrast(1.8) saturate(0.6) brightness(1.2) hue-rotate(5deg);
+        transform: translateX(1px) scale(1.008);
+      }
+      2% { 
+        filter: blur(0.4px) contrast(0.9) saturate(1.2) brightness(0.8) hue-rotate(-5deg);
+        transform: translateX(-1px) scale(1.012);
+      }
+      99% {
+        filter: blur(1px) contrast(1.4) saturate(0.7) brightness(1.1);
+        transform: translateX(0.5px) scale(1.009);
+      }
     }
 
     .left {
@@ -112,6 +232,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
+      filter: blur(0.4px);
     }
 
     .right {
@@ -122,6 +244,7 @@
       justify-content: flex-start;
       align-items: stretch;
       position: relative;
+      filter: blur(0.5px);
     }
 
     .right-header {
@@ -132,26 +255,84 @@
       overflow: hidden;
       flex-shrink: 0;
       text-align: center;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #right-panel-title {
       margin-bottom: 0;
       font-size: 2.5rem;
-      text-shadow: 0 0 15px #fff;
+      text-shadow: 0 0 15px #fff, 0 0 25px #0ff, 0 0 35px #0ff, 0 0 45px rgba(0, 255, 255, 0.3);
       letter-spacing: 0.3rem;
       white-space: nowrap;
       display: inline-block;
-      animation: marquee 15s linear infinite;
+      animation: marquee 12s linear infinite, titleGlitch 3s infinite;
+      position: relative;
+      filter: blur(0.6px);
+    }
+
+    @keyframes titleGlitch {
+      0%, 90%, 100% { 
+        transform: translateX(0);
+        text-shadow: 0 0 15px #fff, 0 0 25px #0ff, 0 0 35px #0ff;
+        filter: blur(0.6px);
+      }
+      5% { 
+        transform: translateX(-2px);
+        text-shadow: -2px 0 #f0f, 2px 0 #0ff, 0 0 15px #fff;
+        filter: blur(1px);
+      }
+      10% { 
+        transform: translateX(2px);
+        text-shadow: 2px 0 #f0f, -2px 0 #0ff, 0 0 15px #fff;
+        filter: blur(0.3px);
+      }
+      15% { 
+        transform: translateX(-1px);
+        text-shadow: -1px 0 #f0f, 1px 0 #0ff, 0 0 15px #fff;
+        filter: blur(0.8px);
+      }
     }
 
     .content-panel {
+      font-family: 'Joystix', monospace;
       flex-grow: 1;
+      font-size : 1.3rem;
+      line-height: 1.8;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      justify-content: flex-start;
+      align-items: flex-start;
       padding: 2rem;
-      text-align: center;
+      text-align: left;
+      position: relative;
+      filter: blur(0.4px);
+    }
+
+    .content-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 255, 255, 0.03) 2px,
+          rgba(0, 255, 255, 0.03) 4px
+        );
+      pointer-events: none;
+      animation: scanlines 0.1s linear infinite;
+    }
+
+    @keyframes scanlines {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(4px); }
     }
 
     @keyframes marquee {
@@ -163,14 +344,44 @@
       color: rgb(228, 230, 228);
       font-size: 2rem;
       margin-bottom: 2rem;
-      text-shadow: 0 0 10px rgb(226, 233, 226);
+      text-shadow: 0 0 10px rgb(226, 233, 226), 0 0 20px #0ff, 0 0 30px rgba(0, 255, 255, 0.3);
       transition: transform 0.3s ease, text-shadow 0.3s ease;
       transform-origin: center center;
+      animation: subtleGlitch 4s infinite;
+      filter: blur(0.5px);
+    }
+
+    @keyframes subtleGlitch {
+      0%, 96%, 100% { 
+        transform: scale(1);
+        text-shadow: 0 0 10px rgb(226, 233, 226), 0 0 20px #0ff;
+        filter: blur(0.5px);
+      }
+      2% { 
+        transform: scale(1.02) skew(0.5deg);
+        text-shadow: -1px 0 #f0f, 1px 0 #0ff, 0 0 10px rgb(226, 233, 226);
+        filter: blur(0.8px);
+      }
+      4% { 
+        transform: scale(0.98) skew(-0.5deg);
+        text-shadow: 1px 0 #f0f, -1px 0 #0ff, 0 0 10px rgb(226, 233, 226);
+        filter: blur(0.3px);
+      }
     }
 
     .site-title:hover {
       transform: scale(1.05);
-      text-shadow: 0 0 15px rgb(255, 255, 255);
+      text-shadow: 0 0 15px rgb(255, 255, 255), 0 0 25px #0ff, 0 0 35px #f0f;
+      animation: hoverGlitch 0.3s ease-out;
+      filter: blur(0.7px);
+    }
+
+    @keyframes hoverGlitch {
+      0% { transform: scale(1.05) translateX(0); }
+      25% { transform: scale(1.05) translateX(-2px); }
+      50% { transform: scale(1.05) translateX(2px); }
+      75% { transform: scale(1.05) translateX(-1px); }
+      100% { transform: scale(1.05) translateX(0); }
     }
 
     .nav-menu {
@@ -185,31 +396,63 @@
     .nav-menu a {
       color: rgb(215, 226, 215);
       text-decoration: none;
-      text-shadow: 0 0 5px rgb(225, 232, 225);
+      text-shadow: 0 0 5px rgb(225, 232, 225), 0 0 10px rgba(225, 232, 225, 0.3);
       cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      filter: blur(0.3px);
     }
 
     .nav-menu a:hover {
       color: #fff;
-      text-shadow: 0 0 10px #fff;
+      text-shadow: 0 0 10px #fff, 0 0 15px #0ff, 0 0 20px #f0f;
+      transform: translateX(5px);
+      animation: linkGlitch 0.5s ease-out;
+      filter: blur(0.5px);
+    }
+
+    @keyframes linkGlitch {
+      0%, 100% { transform: translateX(5px); }
+      20% { transform: translateX(3px) skew(1deg); }
+      40% { transform: translateX(7px) skew(-1deg); }
+      60% { transform: translateX(4px); }
+      80% { transform: translateX(6px); }
     }
 
     .now-playing {
       border-top: 8px solid #333;
       padding-top: 1rem;
       margin-top: auto;
+      animation: playerFlicker 6s infinite;
+      width: 100%;
+      filter: blur(0.4px);
+    }
+
+    @keyframes playerFlicker {
+      0%, 94%, 100% { opacity: 1; }
+      95% { opacity: 0.8; }
+      97% { opacity: 1; }
+      98% { opacity: 0.9; }
     }
 
     .player-status {
       color: #f00;
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
+      animation: recBlink 2s infinite;
+      text-shadow: 0 0 5px #f00, 0 0 10px rgba(255, 0, 0, 0.3);
+    }
+
+    @keyframes recBlink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
     }
 
     .track-info {
       display: flex;
       align-items: center;
       gap: 1rem;
+      width: 100%;
     }
 
     .album-art {
@@ -217,31 +460,68 @@
       height: 60px;
       border: 1px solid #333;
       background: #222;
+      animation: artGlitch 8s infinite;
+      flex-shrink: 0;
+      filter: blur(0.3px);
+    }
+
+    @keyframes artGlitch {
+      0%, 92%, 100% { filter: blur(0.3px); }
+      93% { filter: blur(0.8px) hue-rotate(180deg) contrast(2); }
+      95% { filter: blur(0.5px) hue-rotate(90deg) contrast(1.5) brightness(1.2); }
+      97% { filter: blur(0.6px) hue-rotate(270deg) contrast(0.8); }
     }
 
     .track-details {
       text-align: left;
+      flex-grow: 1;
+      min-width: 0;
     }
 
     .track-title {
       color: rgb(255, 255, 255);
       font-size: 1rem;
       margin-bottom: 0.3rem;
-      text-shadow: 0 0 5px rgb(255, 255, 255);
+      text-shadow: 0 0 5px rgb(255, 255, 255), 0 0 10px rgba(255, 255, 255, 0.2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      filter: blur(0.2px);
     }
 
     .track-artist {
       color: #888;
       font-size: 0.9rem;
+      line-height: 1.2;
+      filter: blur(0.2px);
     }
 
     .welcome-title {
       color: #fff;
       font-size: 2.5rem;
       margin-bottom: 2rem;
-      text-shadow: 0 0 15px #fff;
+      text-shadow: 0 0 15px #fff, 0 0 25px #0ff;
       letter-spacing: 0.3rem;
-      animation: flicker 2s infinite;
+      animation: welcomeFlicker 2s infinite;
+      filter: blur(0.6px);
+    }
+
+    @keyframes welcomeFlicker {
+      0%, 85%, 100% { 
+        opacity: 1; 
+        text-shadow: 0 0 15px #fff, 0 0 25px #0ff;
+        filter: blur(0.6px);
+      }
+      90% { 
+        opacity: 0.8; 
+        text-shadow: 0 0 10px #fff, 0 0 15px #0ff, 2px 0 #f0f, -2px 0 #0ff;
+        filter: blur(0.9px);
+      }
+      95% { 
+        opacity: 1; 
+        text-shadow: 0 0 20px #fff, 0 0 30px #0ff;
+        filter: blur(0.4px);
+      }
     }
 
     .welcome-text {
@@ -249,6 +529,32 @@
       font-size: 1.1rem;
       line-height: 1.6;
       max-width: 400px;
+      animation: textFlicker 7s infinite;
+      filter: blur(0.3px);
+      text-shadow: 0 0 3px rgba(136, 136, 136, 0.5);
+    }
+
+    @keyframes textFlicker {
+      0%, 88%, 100% { 
+        opacity: 1; 
+        filter: blur(0.3px);
+      }
+      90% { 
+        opacity: 0.7; 
+        filter: blur(0.6px);
+      }
+      92% { 
+        opacity: 1; 
+        filter: blur(0.2px);
+      }
+      94% { 
+        opacity: 0.8; 
+        filter: blur(0.5px);
+      }
+      96% { 
+        opacity: 1; 
+        filter: blur(0.3px);
+      }
     }
 
     #static-gif {
@@ -260,26 +566,44 @@
       height: 100%;
       object-fit: cover;
       z-index: 20;
+      filter: blur(0.8px);
     }
 
-    @keyframes glitch {
-      0%, 100% { transform: translateX(0); filter: hue-rotate(0deg); }
-      10% { transform: translateX(-2px); }
-      20% { transform: translateX(2px); }
-      30% { transform: translateX(-1px); }
-      40% { transform: translateX(1px); }
-      50% { transform: translateX(0); filter: hue-rotate(90deg); }
-      60% { transform: translateX(-1px); }
-      70% { transform: translateX(1px); }
-      80% { transform: translateX(-2px); }
-      90% { transform: translateX(2px); }
+    /* Chromatic aberration effect */
+    .chromatic-aberration {
+      animation: chromaticShift 0.3s ease-out;
     }
 
-    @keyframes flicker {
-      0%, 100% { opacity: 1; text-shadow: 0 0 10px rgb(255, 255, 255); }
-      50% { opacity: 0.8; text-shadow: 0 0 5px rgb(255, 255, 255); }
+    @keyframes chromaticShift {
+      0% { 
+        filter: blur(0.8px);
+        transform: translateX(0);
+      }
+      25% { 
+        filter: blur(1.2px) 
+          drop-shadow(-2px 0 0 #f0f) 
+          drop-shadow(2px 0 0 #0ff);
+        transform: translateX(-1px);
+      }
+      50% { 
+        filter: blur(1.5px)
+          drop-shadow(-3px 0 0 #f0f) 
+          drop-shadow(3px 0 0 #0ff);
+        transform: translateX(1px);
+      }
+      75% { 
+        filter: blur(1px)
+          drop-shadow(-1px 0 0 #f0f) 
+          drop-shadow(1px 0 0 #0ff);
+        transform: translateX(-0.5px);
+      }
+      100% { 
+        filter: blur(0.8px);
+        transform: translateX(0);
+      }
     }
 
+    /* Enhanced scanlines */
     body::before {
       content: "";
       position: absolute;
@@ -287,11 +611,25 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.03) 2px, rgba(0, 255, 0, 0.03) 4px);
+      background: 
+        repeating-linear-gradient(
+          0deg, 
+          transparent, 
+          transparent 2px, 
+          rgba(255, 255, 255, 0.04) 2px, 
+          rgba(255, 255, 255, 0.04) 4px
+        );
       pointer-events: none;
       z-index: 10;
+      animation: scanlinesMove 0.1s linear infinite;
     }
 
+    @keyframes scanlinesMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(4px); }
+    }
+
+    /* Enhanced screen noise */
     body::after {
       content: "";
       position: absolute;
@@ -300,14 +638,60 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.1);
-      animation: screen-flicker 0.5s infinite;
+      animation: screenNoise 0.16s infinite;
       pointer-events: none;
       z-index: 9;
     }
 
-    @keyframes screen-flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.98; }
+    @keyframes screenNoise {
+      0% { 
+        opacity: 1; 
+        background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.03) 1px, transparent 1px);
+      }
+      25% { 
+        opacity: 0.98; 
+        background: radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 1px, transparent 1px);
+      }
+      50% { 
+        opacity: 1; 
+        background: radial-gradient(circle at 40% 20%, rgba(255,255,255,0.03) 1px, transparent 1px);
+      }
+      75% { 
+        opacity: 0.99; 
+        background: radial-gradient(circle at 60% 90%, rgba(255,255,255,0.03) 1px, transparent 1px);
+      }
+      100% { 
+        opacity: 1; 
+        background: radial-gradient(circle at 10% 50%, rgba(255,255,255,0.03) 1px, transparent 1px);
+      }
+    }
+
+    /* Interference lines */
+    .interference-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: interferenceMove 3s linear infinite;
+      z-index: 15;
+      filter: blur(0.5px);
+    }
+
+    @keyframes interferenceMove {
+      0% { 
+        top: -2px; 
+        opacity: 0;
+      }
+      10% { 
+        opacity: 1;
+      }
+      90% { 
+        opacity: 0.8;
+      }
+      100% { 
+        top: 100%; 
+        opacity: 0;
+      }
     }
 
     @media (max-width: 768px) {
@@ -332,10 +716,57 @@
 
       #right-panel-title { font-size: 2rem; }
       .site-title { font-size: 1.5rem; }
+      
+      .now-playing {
+        padding: 1rem;
+      }
+      
+      .track-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+      
+      .track-details {
+        text-align: center;
+      }
     }
+
+    #crt-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.07) 0%, rgba(0,0,0,0.1) 80%);
+      mix-blend-mode: screen;
+      animation: crtPulse 2.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes crtPulse {
+      0% {
+        opacity: 0.05;
+        transform: scale(1.002);
+      }
+      100% {
+        opacity: 0.12;
+        transform: scale(1.005);
+      }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
   </style>
 </head>
 <body>
+  <!-- TV de tubo no fundo -->
+  <div id="tv-background"></div>
+  <div id="tv-vignette"></div>
 
   <div id="splash-screen">
     <h1 class="splash-message">clique para iniciar o site</h1>
@@ -349,6 +780,7 @@
 
   <div id="main-content">
     <div class="screen">
+      <div class="interference-line"></div>
       <div class="left">
         <div>
           <h1 class="site-title">[atvn.bfn]</h1>
@@ -383,16 +815,16 @@
 
         <div id="about-content" class="content-panel" style="display: none;">
           <div class="welcome-text">
-            Esta é a seção sobre mim. <br>
-            Aqui você pode adicionar qualquer informação que desejar.
+            My name is Ativani <br>
+            Here are a few places you can find me online:<br><br>
           </div>
         </div>
         
         <div id="projects-content" class="content-panel" style="display: none;">
           <div class="welcome-text">
-            Lista dos meus projetos.<br><br>
-            - Projeto 1 <br>
-            - Projeto 2
+            blablabla<br><br>
+            bla <br>
+            bla
           </div>
         </div>
 
@@ -400,6 +832,7 @@
       </div>
     </div>
   </div>
+
 
   <script>
     const splashScreen = document.getElementById('splash-screen');
@@ -412,9 +845,10 @@
     const navLinks = document.querySelectorAll('.nav-menu a');
     const contentPanels = document.querySelectorAll('.content-panel');
     const rightPanelTitle = document.getElementById('right-panel-title');
+    const screen = document.querySelector('.screen');
 
     function startSite() {
-      pauseSound.play();
+      pauseSound.play().catch(() => {});
       splashScreen.style.display = 'none';
       vhsFlash.style.display = 'block';
       vhsFlash.classList.add('flash-animation');
@@ -432,7 +866,7 @@
       }, 200);
 
       pauseSound.addEventListener('ended', () => {
-        vhsAudio.play();
+        vhsAudio.play().catch(() => {});
       });
     }
 
@@ -443,19 +877,58 @@
         vhsAudio.pause();
       } else {
         if (mainContent.style.display === 'flex') {
-          vhsAudio.play();
+          vhsAudio.play().catch(() => {});
         }
       }
     });
 
-    setInterval(() => {
+    // Enhanced glitch effects
+    function randomGlitch() {
       if (Math.random() < 0.1) {
-        document.body.style.filter = 'hue-rotate(' + Math.random() * 360 + 'deg)';
+        screen.classList.add('chromatic-aberration');
+        document.body.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${1 + Math.random() * 0.5})`;
+        
         setTimeout(() => {
           document.body.style.filter = 'none';
-        }, 100);
+          screen.classList.remove('chromatic-aberration');
+        }, 150);
       }
-    }, 2000);
+    }
+
+    // More frequent and intense glitch effects
+    setInterval(randomGlitch, 1500);
+
+    // Random interference lines
+    function createInterferenceLine() {
+      const line = document.createElement('div');
+      line.className = 'interference-line';
+      line.style.animationDelay = Math.random() * 3 + 's';
+      line.style.animationDuration = (2 + Math.random() * 4) + 's';
+      screen.appendChild(line);
+      
+      setTimeout(() => {
+        line.remove();
+      }, 7000);
+    }
+
+    setInterval(createInterferenceLine, 8000);
+
+    // Enhanced color shift effect
+    function colorShift() {
+      if (Math.random() < 0.05) {
+        const hue = Math.random() * 60 - 30; // -30 to 30 degrees
+        const brightness = 0.9 + Math.random() * 0.2; // 0.9 to 1.1
+        const contrast = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
+        
+        document.body.style.filter = `hue-rotate(${hue}deg) brightness(${brightness}) contrast(${contrast})`;
+        
+        setTimeout(() => {
+          document.body.style.filter = 'none';
+        }, 200);
+      }
+    }
+
+    setInterval(colorShift, 800);
 
     function showContent(targetId, title) {
       const targetPanel = document.getElementById(targetId);
@@ -465,16 +938,28 @@
         panel.style.display = 'none';
       });
 
+      // Reset title animation to maintain consistent position
+      rightPanelTitle.style.animation = 'none';
       rightPanelTitle.textContent = title;
+      
+      // Force reflow and restart animation
+      rightPanelTitle.offsetHeight;
+      rightPanelTitle.style.animation = 'marquee 12s linear infinite, titleGlitch 3s infinite';
 
       staticGif.style.display = 'block';
       staticSound.currentTime = 0;
-      staticSound.play();
+      staticSound.play().catch(() => {});
+
+      // Add extra glitch effect during transition
+      screen.classList.add('chromatic-aberration');
+      document.body.style.filter = 'hue-rotate(180deg) contrast(2)';
 
       setTimeout(() => {
         staticGif.style.display = 'none';
         staticSound.pause();
         targetPanel.style.display = 'flex';
+        screen.classList.remove('chromatic-aberration');
+        document.body.style.filter = 'none';
       }, 300);
     }
 
@@ -485,6 +970,25 @@
         showContent(targetId, title);
       });
     });
+
+    // Random screen distortions
+    function screenDistortion() {
+      if (Math.random() < 0.03) {
+        const skew = Math.random() * 2 - 1; // -1 to 1 degree
+        const scale = 0.998 + Math.random() * 0.004; // 0.998 to 1.002
+        
+        screen.style.transform = `skewX(${skew}deg) scaleY(${scale})`;
+        
+        setTimeout(() => {
+          screen.style.transform = 'none';
+        }, 100);
+      }
+    }
+
+    setInterval(screenDistortion, 2000);
   </script>
+
+  <div id="crt-glow"></div>
+
 </body>
 </html>
