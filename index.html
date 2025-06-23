@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,11 +39,9 @@
       overflow: hidden;
       position: relative;
       backdrop-filter: contrast(1.1) brightness(1.1) saturate(1.05);
-      /* Efeito VHS borrado */
       filter: blur(0.5px) contrast(1.2) brightness(0.95);
     }
 
-    /* TV de tubo piscando no fundo */
     #tv-background {
       position: fixed;
       top: 0;
@@ -53,7 +50,7 @@
       height: 100vh;
       z-index: -2;
       background: radial-gradient(
-        ellipse 80% 60% at center, 
+        ellipse 80% 60% at center,  
         rgba(0, 100, 150, 0.15) 0%,
         rgba(0, 50, 100, 0.08) 30%,
         rgba(0, 20, 50, 0.05) 60%,
@@ -90,7 +87,6 @@
       }
     }
 
-    /* Efeito adicional de borda da TV */
     #tv-vignette {
       position: fixed;
       top: 0;
@@ -128,8 +124,21 @@
       justify-content: center;
       align-items: center;
       z-index: 1000;
-      cursor: pointer;
       filter: blur(0.8px);
+      transition: opacity 0.5s ease-out;
+    }
+
+    #tape-container {
+      position: relative;
+      text-align: center;
+    }
+
+    #tape-image {
+      cursor: pointer;
+      display: block;
+      max-width: 80vw;
+      max-height: 80vh;
+      height: auto;
     }
 
     .splash-message {
@@ -138,7 +147,14 @@
       text-shadow: 0 0 10px rgb(231, 238, 231), 0 0 20px rgba(231, 238, 231, 0.5);
       animation: flicker 1.5s infinite;
       filter: blur(0.3px);
+      position: absolute;
+      bottom: 25px; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      pointer-events: none;
     }
+
 
     #vhs-flash {
       position: fixed;
@@ -196,12 +212,11 @@
       overflow: hidden;
       transform: perspective(1200px) scale(1.01);
       box-shadow: 0 0 40px rgba(255,255,255,0.05) inset,
-            0 0 30px rgba(228, 230, 228, 0.3),
-            0 0 60px rgba(127, 129, 127, 0.2);
+                    0 0 30px rgba(228, 230, 228, 0.3),
+                    0 0 60px rgba(127, 129, 127, 0.2);
       position: relative;
       background: #111;
       animation: screenFlicker 4s infinite;
-      /* Efeito VHS mais intenso na tela */
       filter: blur(0.8px) contrast(1.3) saturate(0.8);
     }
 
@@ -629,7 +644,6 @@
       100% { transform: translateY(4px); }
     }
 
-    /* Enhanced screen noise */
     body::after {
       content: "";
       position: absolute;
@@ -764,19 +778,23 @@
   </style>
 </head>
 <body>
-  <!-- TV de tubo no fundo -->
   <div id="tv-background"></div>
   <div id="tv-vignette"></div>
 
   <div id="splash-screen">
-    <h1 class="splash-message">clique para iniciar o site</h1>
+    <div id="tape-container">
+      <img id="tape-image" src="tapeStatic.png" alt="VHS Tape">
+      <h1 class="splash-message" style="display: none;">clique para iniciar o site</h1>
+    </div>
   </div>
 
   <div id="vhs-flash"></div>
 
-  <audio id="pause-sound" src="Pause.wav"></audio>
-  <audio id="vhs-audio" src="StaticVHS.wav" loop></audio>
-  <audio id="static-sound" src="Static.wav"></audio>
+  <audio id="vhs-open-sound" src="VHSOpen.wav" preload="auto"></audio>
+  <audio id="vhs-close-sound" src="VHSClose.wav" preload="auto"></audio>
+  <audio id="pause-sound" src="Pause.wav" preload="auto"></audio>
+  <audio id="vhs-audio" src="StaticVHS.wav" loop preload="auto"></audio>
+  <audio id="static-sound" src="Static.wav" preload="auto"></audio>
 
   <div id="main-content">
     <div class="screen">
@@ -836,6 +854,12 @@
 
   <script>
     const splashScreen = document.getElementById('splash-screen');
+    const tapeContainer = document.getElementById('tape-container');
+    const tapeImage = document.getElementById('tape-image');
+    const splashMessage = document.querySelector('.splash-message');
+    const vhsOpenSound = document.getElementById('vhs-open-sound');
+    const vhsCloseSound = document.getElementById('vhs-close-sound');
+    
     const mainContent = document.getElementById('main-content');
     const vhsFlash = document.getElementById('vhs-flash');
     const pauseSound = document.getElementById('pause-sound');
@@ -847,30 +871,75 @@
     const rightPanelTitle = document.getElementById('right-panel-title');
     const screen = document.querySelector('.screen');
 
+    
+    //  mixer de som (reduz o volume de todos os áudios)
+    vhsOpenSound.volume = 0.5; //abre
+    vhsCloseSound.volume = 0.5; //fecha
+    pauseSound.volume = 0.4; //efeito de flash
+    vhsAudio.volume = 0.3; // som de fundo contínuo
+    staticSound.volume = 0.4; //acho que é a transição
+
+    // função pra ver se o audio toca direitinho
+    function playAudio(audioElement) {
+        audioElement.currentTime = 0;
+        audioElement.play().catch(error => console.log(`Audio play failed: ${error}`));
+    }
+    
+    // ^^^^^^^^^correções de audio^^^^^^^^^^
+
     function startSite() {
-      pauseSound.play().catch(() => {});
-      splashScreen.style.display = 'none';
-      vhsFlash.style.display = 'block';
-      vhsFlash.classList.add('flash-animation');
+      tapeContainer.style.pointerEvents = 'none'; 
+      
+      splashScreen.style.opacity = '0';
 
+      // sinc flash com efeito
       setTimeout(() => {
-        mainContent.style.display = 'flex';
-        setTimeout(() => {
-          mainContent.classList.add('show');
-        }, 50);
+        splashScreen.style.display = 'none';
+        
+        vhsFlash.style.display = 'block';
+        vhsFlash.classList.add('flash-animation');
+        playAudio(pauseSound);
 
         setTimeout(() => {
-          vhsFlash.style.display = 'none';
-          vhsFlash.classList.remove('flash-animation');
-        }, 100);
-      }, 200);
+            mainContent.style.display = 'flex';
+            setTimeout(() => mainContent.classList.add('show'), 50); // Fade in
+        }, 200);
 
+        setTimeout(() => {
+            vhsFlash.style.display = 'none';
+            vhsFlash.classList.remove('flash-animation');
+        }, 800); // duração da animação de flash
+
+      }, 500); // fade-out
+
+      // static começa só deppois do efito do pause
       pauseSound.addEventListener('ended', () => {
         vhsAudio.play().catch(() => {});
       });
     }
+    
+    // lógica de eventos da tela de iniiiicio
+    tapeContainer.addEventListener('mouseenter', () => {
+      if (tapeImage.src.includes('tapeClose.gif')) return;
+      tapeImage.src = 'tapeOpen.gif';
+      playAudio(vhsOpenSound);
+      splashMessage.style.display = 'block';
+    });
 
-    splashScreen.addEventListener('click', startSite, { once: true });
+    tapeContainer.addEventListener('mouseleave', () => {
+      tapeImage.src = 'tapeClose.gif';
+      playAudio(vhsCloseSound);
+      splashMessage.style.display = 'none';
+
+      setTimeout(() => {
+        if (!tapeContainer.matches(':hover')) {
+          tapeImage.src = 'tapeStatic.png';
+        }
+      }, 1200); 
+    });
+    
+    tapeContainer.addEventListener('click', startSite, { once: true });
+
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
@@ -882,7 +951,6 @@
       }
     });
 
-    // Enhanced glitch effects
     function randomGlitch() {
       if (Math.random() < 0.1) {
         screen.classList.add('chromatic-aberration');
@@ -894,11 +962,8 @@
         }, 150);
       }
     }
-
-    // More frequent and intense glitch effects
     setInterval(randomGlitch, 1500);
 
-    // Random interference lines
     function createInterferenceLine() {
       const line = document.createElement('div');
       line.className = 'interference-line';
@@ -910,10 +975,8 @@
         line.remove();
       }, 7000);
     }
-
     setInterval(createInterferenceLine, 8000);
 
-    // Enhanced color shift effect
     function colorShift() {
       if (Math.random() < 0.05) {
         const hue = Math.random() * 60 - 30; // -30 to 30 degrees
@@ -927,51 +990,47 @@
         }, 200);
       }
     }
-
     setInterval(colorShift, 800);
 
     function showContent(targetId, title) {
       const targetPanel = document.getElementById(targetId);
       if (!targetPanel) return;
 
+      // esconder as áreas de conteúdo
       contentPanels.forEach(panel => {
         panel.style.display = 'none';
       });
 
-      // Reset title animation to maintain consistent position
       rightPanelTitle.style.animation = 'none';
       rightPanelTitle.textContent = title;
-      
-      // Force reflow and restart animation
-      rightPanelTitle.offsetHeight;
+      rightPanelTitle.offsetHeight; // 
       rightPanelTitle.style.animation = 'marquee 12s linear infinite, titleGlitch 3s infinite';
 
+      // tipo uma troca de canal o efeito
       staticGif.style.display = 'block';
-      staticSound.currentTime = 0;
-      staticSound.play().catch(() => {});
+      playAudio(staticSound);
 
-      // Add extra glitch effect during transition
       screen.classList.add('chromatic-aberration');
       document.body.style.filter = 'hue-rotate(180deg) contrast(2)';
 
       setTimeout(() => {
         staticGif.style.display = 'none';
         staticSound.pause();
-        targetPanel.style.display = 'flex';
+        targetPanel.style.display = 'flex'; 
         screen.classList.remove('chromatic-aberration');
         document.body.style.filter = 'none';
       }, 300);
     }
 
     navLinks.forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
         const targetId = link.getAttribute('data-target');
         const title = link.getAttribute('data-title');
         showContent(targetId, title);
       });
     });
 
-    // Random screen distortions
     function screenDistortion() {
       if (Math.random() < 0.03) {
         const skew = Math.random() * 2 - 1; // -1 to 1 degree
@@ -984,7 +1043,6 @@
         }, 100);
       }
     }
-
     setInterval(screenDistortion, 2000);
   </script>
 
