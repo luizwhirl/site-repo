@@ -15,14 +15,14 @@
 
     @font-face {
       font-family: 'VSR';
-      src: url('vsr.ttf') format('truetype');
+      src: url(' assets/fonts/vsr.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
 
     @font-face {
       font-family: 'Joystix';
-      src: url('joystix.otf') format('opentype');
+      src: url(' assets/fonts/joystix.otf') format('opentype');
       font-weight: normal;
       font-style: normal;
     }
@@ -206,7 +206,7 @@
       display: flex;
       width: 100%;
       max-width: 1200px;
-      height: 90vh;
+      height: 75vh;
       border: 8px solid #333;
       border-radius: 12px;
       overflow: hidden;
@@ -783,18 +783,18 @@
 
   <div id="splash-screen">
     <div id="tape-container">
-      <img id="tape-image" src="tapeStatic.png" alt="VHS Tape">
+      <img id="tape-image" src=" assets/imgs/tapeStatic.png" alt="VHS Tape">
       <h1 class="splash-message" style="display: none;">clique para iniciar o site</h1>
     </div>
   </div>
 
   <div id="vhs-flash"></div>
 
-  <audio id="vhs-open-sound" src="VHSOpen.wav" preload="auto"></audio>
-  <audio id="vhs-close-sound" src="VHSClose.wav" preload="auto"></audio>
-  <audio id="pause-sound" src="Pause.wav" preload="auto"></audio>
-  <audio id="vhs-audio" src="StaticVHS.wav" loop preload="auto"></audio>
-  <audio id="static-sound" src="Static.wav" preload="auto"></audio>
+  <audio id="vhs-open-sound" src=" assets/audios/VHSOpen.wav" preload="auto"></audio>
+  <audio id="vhs-close-sound" src=" assets/audios/VHSClose.wav" preload="auto"></audio>
+  <audio id="pause-sound" src=" assets/audios/Pause.wav" preload="auto"></audio>
+  <audio id="vhs-audio" src=" assets/audios/StaticVHS.wav" loop preload="auto"></audio>
+  <audio id="static-sound" src=" assets/audios/Static.wav" preload="auto"></audio>
 
   <div id="main-content">
     <div class="screen">
@@ -810,10 +810,10 @@
         <div class="now-playing">
           <div class="player-status">rec last.fm</div>
           <div class="track-info">
-            <img src="https://placehold.co/60x60/222/0f0?text=♪" alt="Album Art" class="album-art" id="album-art">
+            <img src="https://f4.bcbits.com/img/a0489531859_16.jpg" alt="Album Art" class="album-art" id="album-art">
             <div class="track-details">
-              <div class="track-title" id="track-title">Ghost</div>
-              <div class="track-artist" id="track-artist">Whirr<br>distressor</div>
+              <div class="track-title" id="track-title">Sounds in Motion</div>
+              <div class="track-artist" id="track-artist">Bowery Eletric<br>Bowery Eletric</div>
             </div>
           </div>
         </div>
@@ -846,7 +846,7 @@
           </div>
         </div>
 
-        <img id="static-gif" src="static.gif" alt="Static effect">
+        <img id="static-gif" src=" assets/imgs/static.gif" alt="Static effect">
       </div>
     </div>
   </div>
@@ -920,20 +920,20 @@
     
     // lógica de eventos da tela de iniiiicio
     tapeContainer.addEventListener('mouseenter', () => {
-      if (tapeImage.src.includes('tapeClose.gif')) return;
-      tapeImage.src = 'tapeOpen.gif';
+      if (tapeImage.src.includes(' assets/imgs/tapeClose.gif')) return;
+      tapeImage.src = ' assets/imgs/tapeOpen.gif';
       playAudio(vhsOpenSound);
       splashMessage.style.display = 'block';
     });
 
     tapeContainer.addEventListener('mouseleave', () => {
-      tapeImage.src = 'tapeClose.gif';
+      tapeImage.src = ' assets/imgs/tapeClose.gif';
       playAudio(vhsCloseSound);
       splashMessage.style.display = 'none';
 
       setTimeout(() => {
         if (!tapeContainer.matches(':hover')) {
-          tapeImage.src = 'tapeStatic.png';
+          tapeImage.src = ' assets/imgs/tapeStatic.png';
         }
       }, 1200); 
     });
