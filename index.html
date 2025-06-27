@@ -584,7 +584,7 @@
       filter: blur(0.8px);
     }
 
-    /* Chromatic aberration effect */
+    /* aberração */
     .chromatic-aberration {
       animation: chromaticShift 0.3s ease-out;
     }
@@ -618,7 +618,7 @@
       }
     }
 
-    /* Enhanced scanlines */
+    /* scanline */
     body::before {
       content: "";
       position: absolute;
@@ -680,7 +680,7 @@
       }
     }
 
-    /* Interference lines */
+    /* linhas de interferência */
     .interference-line {
       position: absolute;
       width: 100%;
@@ -759,17 +759,6 @@
       animation: crtPulse 2.4s ease-in-out infinite alternate;
     }
 
-    @keyframes crtPulse {
-      0% {
-        opacity: 0.05;
-        transform: scale(1.002);
-      }
-      100% {
-        opacity: 0.12;
-        transform: scale(1.005);
-      }
-    }
-
     @keyframes flicker {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.8; }
@@ -810,10 +799,10 @@
         <div class="now-playing">
           <div class="player-status">rec last.fm</div>
           <div class="track-info">
-            <img src="https://f4.bcbits.com/img/a0489531859_16.jpg" alt="Album Art" class="album-art" id="album-art">
+            <img src="https://f4.bcbits.com/img/a2707692986_10.jpg" alt="Album Art" class="album-art" id="album-art">
             <div class="track-details">
-              <div class="track-title" id="track-title">Sounds in Motion</div>
-              <div class="track-artist" id="track-artist">Bowery Eletric<br>Bowery Eletric</div>
+              <div class="track-title" id="track-title">Twist</div>
+              <div class="track-artist" id="track-artist">Whirr<br>Part Time Punks Sessions</div>
             </div>
           </div>
         </div>
@@ -833,8 +822,7 @@
 
         <div id="about-content" class="content-panel" style="display: none;">
           <div class="welcome-text">
-            My name is Ativani <br>
-            Here are a few places you can find me online:<br><br>
+            My name is <span id="glitch-name">ATVN.BFN</span> <br> Here are a few places you can find me online:<br><br>
           </div>
         </div>
         
@@ -870,6 +858,9 @@
     const contentPanels = document.querySelectorAll('.content-panel');
     const rightPanelTitle = document.getElementById('right-panel-title');
     const screen = document.querySelector('.screen');
+    
+    const glitchNameElement = document.getElementById('glitch-name');
+    let glitchNameInterval = null;
 
     
     //  mixer de som (reduz o volume de todos os áudios)
@@ -992,9 +983,28 @@
     }
     setInterval(colorShift, 800);
 
+    // START: NEW FUNCTIONS FOR GLITCH NAME EFFECT
+    const glitchChars = 'ATVNBFN#$@%&*<>()_+[]{}|10?ùÜ║┌ù©åë';
+
+    function updateGlitchName() {
+        if (!glitchNameElement) return;
+        let randomText = '';
+        // 7 caracateresrsr
+        for (let i = 0; i < 7; i++) {
+            randomText += glitchChars.charAt(Math.floor(Math.random() * glitchChars.length));
+        }
+        glitchNameElement.textContent = randomText;
+    }
+
     function showContent(targetId, title) {
       const targetPanel = document.getElementById(targetId);
       if (!targetPanel) return;
+      
+      // limpart intervalo pra mudar os numero
+      if (glitchNameInterval) {
+        clearInterval(glitchNameInterval);
+        glitchNameInterval = null;
+      }
 
       // esconder as áreas de conteúdo
       contentPanels.forEach(panel => {
@@ -1019,6 +1029,10 @@
         targetPanel.style.display = 'flex'; 
         screen.classList.remove('chromatic-aberration');
         document.body.style.filter = 'none';
+        
+        if (targetId === 'about-content') {
+            glitchNameInterval = setInterval(updateGlitchName, 50); // muda a kada 50ms pra fica rapido
+        }
       }, 300);
     }
 
