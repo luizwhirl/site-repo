@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>atvn.bfn</title>
+    <link rel="icon" href="assets/imgs/icon.png">
+    <title>[atvn.bfn]</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* Reset */
@@ -144,9 +145,8 @@
         .splash-message {
             color: rgb(223, 230, 223);
             font-size: 1.5rem;
-            text-shadow: 0 0 10px rgb(231, 238, 231), 0 0 20px rgba(231, 238, 231, 0.5);
+            filter: url(#glow-white-subtle);
             animation: flicker 1.5s infinite;
-            filter: blur(0.3px);
             position: absolute;
             bottom: 25px;
             left: 50%;
@@ -212,8 +212,8 @@
             overflow: hidden;
             transform: perspective(1200px) scale(1.01);
             box-shadow: 0 0 40px rgba(255,255,255,0.05) inset,
-                        0 0 30px rgba(228, 230, 228, 0.3),
-                        0 0 60px rgba(127, 129, 127, 0.2);
+                          0 0 30px rgba(228, 230, 228, 0.3),
+                          0 0 60px rgba(127, 129, 127, 0.2);
             position: relative;
             background: #111;
             animation: screenFlicker 4s infinite;
@@ -270,7 +270,7 @@
             overflow: hidden;
             flex-shrink: 0;
             text-align: center;
-            height: 80px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -279,24 +279,22 @@
         #right-panel-title {
             margin-bottom: 0;
             font-size: 2.5rem;
-            text-shadow: 0 0 15px #fff, 0 0 25px #0ff, 0 0 35px #0ff, 0 0 45px rgba(0, 255, 255, 0.3);
             letter-spacing: 0.3rem;
             white-space: nowrap;
             display: inline-block;
             animation: marquee 12s linear infinite, titleGlitch 3s infinite;
             position: relative;
-            filter: blur(0.6px);
+            filter: url(#glow-cyan); 
         }
 
         @keyframes titleGlitch {
             0%, 90%, 100% {
                 transform: translateX(0);
-                text-shadow: 0 0 15px #fff, 0 0 25px #0ff, 0 0 35px #0ff;
-                filter: blur(0.6px);
+                filter: url(#glow-cyan); 
             }
             5% {
                 transform: translateX(-2px);
-                text-shadow: -2px 0 #f0f, 2px 0 #0ff, 0 0 15px #fff;
+                text-shadow: -2px 0 #f0f, 2px 0 #0ff, 0 0 15px #fff; 
                 filter: blur(1px);
             }
             10% {
@@ -357,20 +355,18 @@
 
         .site-title {
             color: rgb(228, 230, 228);
-            font-size: 2rem;
+            font-size: 3rem;
             margin-bottom: 2rem;
-            text-shadow: 0 0 10px rgb(226, 233, 226), 0 0 20px #0ff, 0 0 30px rgba(0, 255, 255, 0.3);
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            transition: transform 0.3s ease, filter 0.3s ease; 
             transform-origin: center center;
             animation: subtleGlitch 4s infinite;
-            filter: blur(0.5px);
+            filter: url(#glow-cyan);
         }
 
         @keyframes subtleGlitch {
             0%, 96%, 100% {
                 transform: scale(1);
-                text-shadow: 0 0 10px rgb(226, 233, 226), 0 0 20px #0ff;
-                filter: blur(0.5px);
+                filter: url(#glow-cyan);
             }
             2% {
                 transform: scale(1.02) skew(0.5deg);
@@ -386,9 +382,8 @@
 
         .site-title:hover {
             transform: scale(1.05);
-            text-shadow: 0 0 15px rgb(255, 255, 255), 0 0 25px #0ff, 0 0 35px #f0f;
+            filter: url(#glow-hover); 
             animation: hoverGlitch 0.3s ease-out;
-            filter: blur(0.7px);
         }
 
         @keyframes hoverGlitch {
@@ -405,25 +400,23 @@
 
         .nav-menu li {
             margin-bottom: 1rem;
-            font-size: 1.2rem;
+            font-size: 2rem;
         }
 
         .nav-menu a {
             color: rgb(215, 226, 215);
             text-decoration: none;
-            text-shadow: 0 0 5px rgb(225, 232, 225), 0 0 10px rgba(225, 232, 225, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-block;
-            filter: blur(0.3px);
+            filter: url(#glow-white-subtle);
         }
 
         .nav-menu a:hover {
             color: #fff;
-            text-shadow: 0 0 10px #fff, 0 0 15px #0ff, 0 0 20px #f0f;
             transform: translateX(5px);
             animation: linkGlitch 0.5s ease-out;
-            filter: blur(0.5px);
+            filter: url(#glow-hover);
         }
 
         @keyframes linkGlitch {
@@ -436,15 +429,18 @@
 
         .now-playing {
             border-top: 8px solid #333;
-            padding-top: 1rem;
+            padding: 1rem 2rem 0;
             margin-top: auto;
+            width: calc(100% + 4rem);
+            margin-left: -2rem;
+            position: relative;
+        }
+        
+        .now-playing-content {
             animation: playerFlicker 6s infinite;
-            width: 100%;
-            filter: blur(0.4px);
         }
 
-        /* pro lastplated mudança */
-        .now-playing.is-changing {
+        .now-playing-content.is-changing {
             animation: trackChangeGlitch 0.5s ease-out;
         }
 
@@ -456,8 +452,7 @@
             80% { transform: none; filter: blur(0.6px); }
         }
 
-        /* dar uma reforçada no nowplayin */
-        .now-playing.is-now-playing-glitch {
+        .now-playing-content.is-now-playing-glitch {
             animation: nowPlayingGlitch 0.7s ease-in-out;
         }
 
@@ -482,7 +477,7 @@
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             animation: recBlink 2s infinite;
-            text-shadow: 0 0 5px #f00, 0 0 10px rgba(255, 0, 0, 0.3);
+            filter: url(#glow-red); 
         }
 
         @keyframes recBlink {
@@ -524,15 +519,14 @@
             color: rgb(255, 255, 255);
             font-size: 1rem;
             margin-bottom: 0.3rem;
-            text-shadow: 0 0 5px rgb(255, 255, 255), 0 0 10px rgba(255, 255, 255, 0.2);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            filter: blur(0.2px);
+            filter: url(#glow-white); 
         }
 
         .track-artist {
-            color: #888;
+            color: #aaa; 
             font-size: 0.9rem;
             line-height: 1.2;
             filter: blur(0.2px);
@@ -542,38 +536,34 @@
             color: #fff;
             font-size: 2.5rem;
             margin-bottom: 2rem;
-            text-shadow: 0 0 15px #fff, 0 0 25px #0ff;
             letter-spacing: 0.3rem;
             animation: welcomeFlicker 2s infinite;
-            filter: blur(0.6px);
+            filter: url(#glow-cyan); 
         }
 
         @keyframes welcomeFlicker {
             0%, 85%, 100% {
                 opacity: 1;
-                text-shadow: 0 0 15px #fff, 0 0 25px #0ff;
-                filter: blur(0.6px);
+                filter: url(#glow-cyan);
             }
             90% {
                 opacity: 0.8;
-                text-shadow: 0 0 10px #fff, 0 0 15px #0ff, 2px 0 #f0f, -2px 0 #0ff;
+                text-shadow: 2px 0 #f0f, -2px 0 #0ff; 
                 filter: blur(0.9px);
             }
             95% {
                 opacity: 1;
-                text-shadow: 0 0 20px #fff, 0 0 30px #0ff;
-                filter: blur(0.4px);
+                filter: url(#glow-cyan-strong); 
             }
         }
 
         .welcome-text {
-            color: #888;
+            color: #aaa; 
             font-size: 1.1rem;
             line-height: 1.6;
             max-width: 400px;
             animation: textFlicker 7s infinite;
             filter: blur(0.3px);
-            text-shadow: 0 0 3px rgba(136, 136, 136, 0.5);
         }
 
         @keyframes textFlicker {
@@ -611,7 +601,6 @@
             filter: blur(0.8px);
         }
 
-        /* aberração */
         .chromatic-aberration {
             animation: chromaticShift 0.3s ease-out;
         }
@@ -645,7 +634,6 @@
             }
         }
 
-        /* scanline */
         body::before {
             content: "";
             position: absolute;
@@ -707,7 +695,6 @@
             }
         }
 
-        /* linhas de interferência */
         .interference-line {
             position: absolute;
             width: 100%;
@@ -794,6 +781,53 @@
     </style>
 </head>
 <body>
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="glow-cyan">
+                <feGaussianBlur stdDeviation="4 1" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <filter id="glow-cyan-strong">
+                <feGaussianBlur stdDeviation="6 1.5" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <filter id="glow-hover">
+                <feGaussianBlur stdDeviation="5 1.2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <filter id="glow-white">
+                <feGaussianBlur stdDeviation="3 0.8" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <filter id="glow-white-subtle">
+                <feGaussianBlur stdDeviation="2.5 0.5" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <filter id="glow-red">
+                <feGaussianBlur stdDeviation="3 1" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+    </svg>
+
     <div id="tv-background"></div>
     <div id="tv-vignette"></div>
 
@@ -809,7 +843,7 @@
     <audio id="vhs-open-sound" src="assets/audios/VHSOpen.wav" preload="auto"></audio>
     <audio id="vhs-close-sound" src="assets/audios/VHSClose.wav" preload="auto"></audio>
     <audio id="pause-sound" src="assets/audios/Pause.wav" preload="auto"></audio>
-    <audio id="vhs-audio" src="assets/audios/StaticVHS.wav" loop preload="auto"></audio>
+    <audio id="vhs-audio" src="assets/audios/StaticVHS.wav" preload="auto"></audio>
     <audio id="static-sound" src="assets/audios/Static.wav" preload="auto"></audio>
     <audio id="music-change-sound" src="assets/audios/MusicChange.wav" preload="auto"></audio>
 
@@ -825,12 +859,14 @@
                     </ul>
                 </div>
                 <div class="now-playing">
-                    <div class="player-status">rec ● aguardando...</div>
-                    <div class="track-info">
-                        <img src="https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png" alt="Album Art" class="album-art" id="album-art">
-                        <div class="track-details">
-                            <div class="track-title" id="track-title">Carregando...</div>
-                            <div class="track-artist" id="track-artist">Buscando dados no Last.fm</div>
+                    <div class="now-playing-content">
+                        <div class="player-status">rec ● aguardando...</div>
+                        <div class="track-info">
+                            <img src="https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png" alt="Album Art" class="album-art" id="album-art">
+                            <div class="track-details">
+                                <div class="track-title" id="track-title">Carregando...</div>
+                                <div class="track-artist" id="track-artist">Buscando dados no Last.fm</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -879,7 +915,6 @@
         const mainContent = document.getElementById('main-content');
         const vhsFlash = document.getElementById('vhs-flash');
         const pauseSound = document.getElementById('pause-sound');
-        const vhsAudio = document.getElementById('vhs-audio');
         const staticSound = document.getElementById('static-sound');
         const musicChangeSound = document.getElementById('music-change-sound');
         const staticGif = document.getElementById('static-gif');
@@ -891,15 +926,17 @@
         const glitchNameElement = document.getElementById('glitch-name');
         let glitchNameInterval = null;
 
-        // controle da musica vriaveis
+        let audioContext;
+        let vhsAudioBuffer;
+        let vhsAudioSource = null;
+        let vhsGainNode;
+
         let currentTrackName = null;
         let isInitialFetch = true;
         
-        // Mixer de som
         vhsOpenSound.volume = 0.5;
         vhsCloseSound.volume = 0.5;
         pauseSound.volume = 0.4;
-        vhsAudio.volume = 0.3;
         staticSound.volume = 0.4;
         musicChangeSound.volume = 0.6;
 
@@ -908,8 +945,46 @@
             audioElement.play().catch(error => console.log(`Audio play failed: ${error}`));
         }
 
+        function playSeamlessLoop() {
+            if (!audioContext || !vhsAudioBuffer || vhsAudioSource) return;
+            if (audioContext.state === 'suspended') audioContext.resume();
+            
+            vhsAudioSource = audioContext.createBufferSource();
+            vhsAudioSource.buffer = vhsAudioBuffer;
+            vhsAudioSource.loop = true;
+            vhsAudioSource.connect(vhsGainNode);
+            vhsAudioSource.start(0);
+        }
+
+        function stopSeamlessLoop() {
+            if (vhsAudioSource) {
+                vhsAudioSource.stop(0);
+                vhsAudioSource.disconnect();
+                vhsAudioSource = null;
+            }
+        }
+
         function startSite() {
             tapeContainer.style.pointerEvents = 'none';
+
+            if (!audioContext) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    vhsGainNode = audioContext.createGain();
+                    vhsGainNode.gain.value = 0.3;
+                    vhsGainNode.connect(audioContext.destination);
+
+                    fetch('assets/audios/StaticVHS.wav')
+                        .then(res => res.arrayBuffer())
+                        .then(buffer => audioContext.decodeAudioData(buffer))
+                        .then(decodedData => {
+                            vhsAudioBuffer = decodedData;
+                        })
+                        .catch(e => console.error('Error loading audio file:', e));
+                } catch (e) {
+                    console.error('Web Audio API not supported', e);
+                }
+            }
             
             splashScreen.style.opacity = '0';
 
@@ -933,7 +1008,7 @@
             }, 500);
 
             pauseSound.addEventListener('ended', () => {
-                vhsAudio.play().catch(() => {});
+                playSeamlessLoop();
             });
 
             fetchLastFm();
@@ -963,10 +1038,10 @@
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                vhsAudio.pause();
+                stopSeamlessLoop();
             } else {
                 if (mainContent.style.display === 'flex') {
-                    vhsAudio.play().catch(() => {});
+                    playSeamlessLoop();
                 }
             }
         });
@@ -1084,36 +1159,33 @@
         setInterval(screenDistortion, 2000);
         
         function triggerTrackChangeGlitch() {
-            const nowPlayingPanel = document.querySelector('.now-playing');
-            if (!nowPlayingPanel) return;
+            const nowPlayingContent = document.querySelector('.now-playing-content');
+            if (!nowPlayingContent) return;
 
             playAudio(staticSound);
-            nowPlayingPanel.classList.add('is-changing');
+            nowPlayingContent.classList.add('is-changing');
 
             setTimeout(() => {
-                nowPlayingPanel.classList.remove('is-changing');
+                nowPlayingContent.classList.remove('is-changing');
                 staticSound.pause();
                 staticSound.currentTime = 0;
             }, 500);
         }
 
         function triggerNowPlayingGlitch() {
-            const nowPlayingPanel = document.querySelector('.now-playing');
-            if (!nowPlayingPanel) return;
+            const nowPlayingContent = document.querySelector('.now-playing-content');
+            if (!nowPlayingContent) return;
 
             playAudio(musicChangeSound);
-            nowPlayingPanel.classList.add('is-now-playing-glitch');
+            nowPlayingContent.classList.add('is-now-playing-glitch');
 
             setTimeout(() => {
-                nowPlayingPanel.classList.remove('is-now-playing-glitch');
+                nowPlayingContent.classList.remove('is-now-playing-glitch');
             }, 700);
         }
         
         function fetchLastFm() {
-            const apiKey = '52737df0d1a66d37646a2c8d8c5b07ad'; 
-            const username = 'osaksa'; 
-
-            const apiUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apiKey}&format=json&limit=1`;
+            const apiUrl = `/.netlify/functions/get-lastfm.js`;
 
             const albumArt = document.getElementById('album-art');
             const trackTitle = document.getElementById('track-title');
