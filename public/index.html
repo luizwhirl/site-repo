@@ -42,6 +42,7 @@
             position: relative;
             backdrop-filter: contrast(1.1) brightness(1.1) saturate(1.05);
             filter: blur(0.5px) contrast(1.2) brightness(0.95);
+            will-change: filter; /* Optimization */
         }
 
         #tv-background {
@@ -59,6 +60,7 @@
                 rgba(0, 0, 0, 0.9) 100%
             );
             animation: tvGlow 3s ease-in-out infinite alternate;
+            will-change: opacity, transform, filter; /* Optimization */
         }
 
         @keyframes tvGlow {
@@ -104,6 +106,7 @@
                 rgba(0, 0, 0, 0.8) 100%
             );
             animation: vignettePulse 4s ease-in-out infinite;
+            will-change: opacity; /* Optimization */
         }
 
         @keyframes vignettePulse {
@@ -128,6 +131,7 @@
             z-index: 1000;
             filter: blur(0.8px);
             transition: opacity 0.5s ease-out;
+            will-change: opacity; /* Optimization */
         }
 
         #tape-container {
@@ -154,6 +158,7 @@
             transform: translateX(-50%);
             width: 100%;
             pointer-events: none;
+            will-change: opacity; /* Optimization */
         }
 
 
@@ -167,6 +172,7 @@
             z-index: 999;
             display: none;
             opacity: 0;
+            will-change: opacity; /* Optimization */
         }
 
         .flash-animation {
@@ -197,6 +203,7 @@
             opacity: 0;
             transition: opacity 0.3s ease-in;
             filter: blur(0.7px) brightness(0.9);
+            will-change: opacity; /* Optimization */
         }
 
         #main-content.show {
@@ -219,6 +226,7 @@
             background: #111;
             animation: screenFlicker 4s infinite;
             filter: blur(0.8px) contrast(1.3) saturate(0.8);
+            will-change: transform, filter; /* Optimization */
         }
 
         @keyframes screenFlicker {
@@ -286,6 +294,7 @@
             animation: marquee 12s linear infinite, titleGlitch 3s infinite;
             position: relative;
             filter: url(#glow-cyan); 
+            will-change: transform, filter; /* Optimization */
         }
 
         @keyframes titleGlitch {
@@ -342,6 +351,7 @@
                 );
             pointer-events: none;
             animation: scanlines 0.1s linear infinite;
+            will-change: transform; /* Optimization */
         }
 
         @keyframes scanlines {
@@ -362,6 +372,7 @@
             transform-origin: center center;
             animation: subtleGlitch 4s infinite;
             filter: url(#glow-cyan);
+            will-change: transform, filter; /* Optimization */
         }
 
         @keyframes subtleGlitch {
@@ -411,6 +422,7 @@
             transition: all 0.3s ease;
             display: inline-block;
             filter: url(#glow-white-subtle);
+            will-change: transform, filter, color; /* Optimization */
         }
 
         .nav-menu a:hover {
@@ -439,6 +451,7 @@
         
         .now-playing-content {
             animation: playerFlicker 6s infinite;
+            will-change: transform, filter, opacity; /* Optimization */
         }
 
         .now-playing-content.is-changing {
@@ -479,6 +492,7 @@
             margin-bottom: 0.5rem;
             animation: recBlink 2s infinite;
             filter: url(#glow-red); 
+            will-change: opacity; /* Optimization */
         }
 
         @keyframes recBlink {
@@ -501,6 +515,7 @@
             animation: artGlitch 8s infinite;
             flex-shrink: 0;
             filter: blur(0.3px);
+            will-change: filter; /* Optimization */
         }
 
         @keyframes artGlitch {
@@ -540,6 +555,7 @@
             letter-spacing: 0.3rem;
             animation: welcomeFlicker 2s infinite;
             filter: url(#glow-cyan); 
+            will-change: opacity, filter; /* Optimization */
         }
 
         @keyframes welcomeFlicker {
@@ -565,6 +581,7 @@
             max-width: 400px;
             animation: textFlicker 7s infinite;
             filter: blur(0.3px);
+            will-change: opacity, filter; /* Optimization */
         }
 
         @keyframes textFlicker {
@@ -653,6 +670,7 @@
             pointer-events: none;
             z-index: 10;
             animation: scanlinesMove 0.1s linear infinite;
+            will-change: transform; /* Optimization */
         }
 
         @keyframes scanlinesMove {
@@ -671,6 +689,7 @@
             animation: screenNoise 0.16s infinite;
             pointer-events: none;
             z-index: 9;
+            will-change: opacity, background; /* Optimization */
         }
 
         @keyframes screenNoise {
@@ -704,6 +723,7 @@
             animation: interferenceMove 3s linear infinite;
             z-index: 15;
             filter: blur(0.5px);
+            will-change: top, opacity; /* Optimization */
         }
 
         @keyframes interferenceMove {
@@ -801,6 +821,7 @@
             background-color: transparent;
             transition: all 0.3s ease;
             filter: url(#glow-white-subtle);
+            will-change: transform, filter, background-color, border-color, color, box-shadow; /* Optimization */
         }
         
         .social-button i {
