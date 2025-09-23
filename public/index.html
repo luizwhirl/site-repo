@@ -983,7 +983,7 @@
     </div>
 
 
-    <script>
+<script>
         const splashScreen = document.getElementById('splash-screen');
         const tapeContainer = document.getElementById('tape-container');
         const tapeImage = document.getElementById('tape-image');
@@ -1013,6 +1013,12 @@
         let currentTrackName = null;
         let isInitialFetch = true;
         
+        // --- INÍCIO DAS MUDANÇAS PARA A ANIMAÇÃO DA FITA ---
+        let isTapeAnimating = false;
+        const TAPE_ANIMATION_DURATION = 1200; // Duração em ms para as animações da fita
+        let tapeCloseTimeout = null;
+        // --- FIM DAS MUDANÇAS PARA A ANIMAÇÃO DA FITA ---
+
         vhsOpenSound.volume = 0.5;
         vhsCloseSound.volume = 0.5;
         pauseSound.volume = 0.4;
@@ -1094,24 +1100,37 @@
             setInterval(fetchLastFm, 15000); 
         }
         
+        // --- LÓGICA DE ANIMAÇÃO DA FITA CORRIGIDA ---
         tapeContainer.addEventListener('mouseenter', () => {
-            if (tapeImage.src.includes('assets/imgs/tapeClose.gif')) return;
-            tapeImage.src = 'assets/imgs/tapeOpen.gif';
+            if (isTapeAnimating) return; // Se estiver animando, não faz nada
+            
+            clearTimeout(tapeCloseTimeout); // Cancela o timeout de fechar se o usuário voltar
+            isTapeAnimating = true;
+
+            // Adiciona um timestamp para forçar o GIF a reiniciar (cache busting)
+            tapeImage.src = `assets/imgs/tapeOpen.gif?t=${new Date().getTime()}`;
             playAudio(vhsOpenSound);
             splashMessage.style.display = 'block';
+
+            setTimeout(() => {
+                isTapeAnimating = false;
+            }, TAPE_ANIMATION_DURATION);
         });
 
         tapeContainer.addEventListener('mouseleave', () => {
-            tapeImage.src = 'assets/imgs/tapeClose.gif';
+            if (isTapeAnimating) return; // Se estiver animando, não faz nada
+
+            isTapeAnimating = true;
+            tapeImage.src = `assets/imgs/tapeClose.gif?t=${new Date().getTime()}`;
             playAudio(vhsCloseSound);
             splashMessage.style.display = 'none';
 
-            setTimeout(() => {
-                if (!tapeContainer.matches(':hover')) {
-                    tapeImage.src = 'assets/imgs/tapeStatic.png';
-                }
-            }, 1200); 
+            tapeCloseTimeout = setTimeout(() => {
+                tapeImage.src = 'assets/imgs/tapeStatic.png';
+                isTapeAnimating = false;
+            }, TAPE_ANIMATION_DURATION); 
         });
+        // --- FIM DA LÓGICA CORRIGIDA ---
         
         tapeContainer.addEventListener('click', startSite, { once: true });
 
@@ -1322,8 +1341,3 @@
                 });
         }
     </script>
-
-    <div id="crt-glow"></div>
-
-</body>
-</html>
