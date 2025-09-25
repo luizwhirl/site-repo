@@ -1013,12 +1013,10 @@
         let currentTrackName = null;
         let isInitialFetch = true;
         
-        // --- INÍCIO DAS MUDANÇAS PARA A ANIMAÇÃO DA FITA ---
         let isTapeAnimating = false;
-        const TAPE_ANIMATION_DURATION = 1200; // Duração em ms para as animações da fita
+        const TAPE_ANIMATION_DURATION = 1200;
         let tapeCloseTimeout = null;
-        // --- FIM DAS MUDANÇAS PARA A ANIMAÇÃO DA FITA ---
-
+        
         vhsOpenSound.volume = 0.5;
         vhsCloseSound.volume = 0.5;
         pauseSound.volume = 0.4;
@@ -1100,14 +1098,12 @@
             setInterval(fetchLastFm, 15000); 
         }
         
-        // --- LÓGICA DE ANIMAÇÃO DA FITA CORRIGIDA ---
         tapeContainer.addEventListener('mouseenter', () => {
-            if (isTapeAnimating) return; // Se estiver animando, não faz nada
+            if (isTapeAnimating) return;
             
-            clearTimeout(tapeCloseTimeout); // Cancela o timeout de fechar se o usuário voltar
+            clearTimeout(tapeCloseTimeout);
             isTapeAnimating = true;
 
-            // Adiciona um timestamp para forçar o GIF a reiniciar (cache busting)
             tapeImage.src = `assets/imgs/tapeOpen.gif?t=${new Date().getTime()}`;
             playAudio(vhsOpenSound);
             splashMessage.style.display = 'block';
@@ -1118,7 +1114,7 @@
         });
 
         tapeContainer.addEventListener('mouseleave', () => {
-            if (isTapeAnimating) return; // Se estiver animando, não faz nada
+            if (isTapeAnimating) return;
 
             isTapeAnimating = true;
             tapeImage.src = `assets/imgs/tapeClose.gif?t=${new Date().getTime()}`;
@@ -1130,7 +1126,6 @@
                 isTapeAnimating = false;
             }, TAPE_ANIMATION_DURATION); 
         });
-        // --- FIM DA LÓGICA CORRIGIDA ---
         
         tapeContainer.addEventListener('click', startSite, { once: true });
 
@@ -1322,14 +1317,31 @@
                         trackTitle.textContent = track.name;
                         trackArtist.innerHTML = `${track.artist['#text']}<br>${track.album['#text']}`;
                         
-                        if (track.image[2] && track.image[2]['#text']) {
-                            albumArt.src = track.image[2]['#text'];
+                        const newImageUrl = (track.image[2] && track.image[2]['#text']) 
+                                            ? track.image[2]['#text'] 
+                                            : 'assets/imgs/static.gif';
+
+                        if (albumArt.src !== newImageUrl) {
+                            albumArt.src = 'assets/imgs/static.gif';
+
+                            const imageLoader = new Image();
+                            
+                            imageLoader.onload = () => {
+                                albumArt.src = newImageUrl;
+                            };
+
+                            imageLoader.onerror = () => {
+                                albumArt.src = 'assets/imgs/static.gif';
+                            };
+
+                            imageLoader.src = newImageUrl;
                         }
 
                     } else {
                         playerStatus.textContent = 'rec ● offline';
                         trackTitle.textContent = 'Nenhuma atividade';
                         trackArtist.textContent = 'Nada encontrado.';
+                        albumArt.src = 'assets/imgs/static.gif'; 
                     }
                 })
                 .catch(error => {
@@ -1337,6 +1349,7 @@
                     playerStatus.textContent = 'rec ● error';
                     trackTitle.textContent = 'Falha na Conexão';
                     trackArtist.textContent = 'Não foi possível carregar.';
+                    albumArt.src = 'assets/imgs/static.gif';
                     isInitialFetch = false;
                 });
         }
