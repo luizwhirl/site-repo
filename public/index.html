@@ -440,6 +440,32 @@
             80% { transform: translateX(6px); }
         }
 
+        /* INÍCIO: CSS DO BOTÃO DE CONFIGURAÇÕES */
+        #settings-button {
+            font-size: 1.5rem;
+            color: rgb(215, 226, 215);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            filter: url(#glow-white-subtle);
+            margin-top: 3rem; /* Espaçamento */
+            will-change: transform, filter, color;
+        }
+
+        #settings-button:hover {
+            color: #fff;
+            transform: translateX(5px);
+            animation: linkGlitch 0.5s ease-out;
+            filter: url(#glow-hover);
+        }
+
+        #settings-button i {
+            margin-right: 0.5rem;
+        }
+        /* FIM: CSS DO BOTÃO DE CONFIGURAÇÕES */
+
+
         .now-playing {
             border-top: 8px solid #333;
             padding: 1rem 2rem 0;
@@ -839,6 +865,147 @@
         }
         /* FIM DO CSS PARA BOTÕES SOCIAIS */
 
+        /* INÍCIO: CSS DO MODAL DE CONFIGURAÇÕES */
+        #settings-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: none; /* Começa oculto */
+            justify-content: center;
+            align-items: center;
+            font-family: 'VSR', monospace;
+            backdrop-filter: blur(5px);
+            animation: screenFlicker 4s infinite; /* Reutiliza a animação */
+        }
+
+        #settings-modal {
+            width: 90%;
+            max-width: 500px;
+            background: #0a0a0a;
+            border: 8px solid #333;
+            border-radius: 12px;
+            color: rgb(230, 241, 230);
+            filter: blur(0.7px) contrast(1.3) saturate(0.8) brightness(0.9);
+            box-shadow: 0 0 30px rgba(228, 230, 228, 0.3),
+                        0 0 60px rgba(127, 129, 127, 0.2);
+            position: relative;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 8px solid #333;
+        }
+
+        .settings-header h2 {
+            font-size: 2rem;
+            color: #fff;
+            filter: url(#glow-cyan);
+            letter-spacing: 0.2rem;
+        }
+
+        #settings-close-button {
+            font-size: 3rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: rgb(215, 226, 215);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: url(#glow-white-subtle);
+            transform: translateY(-3px);
+        }
+        #settings-close-button:hover {
+            color: #fff;
+            transform: scale(1.1) translateY(-3px);
+            filter: url(#glow-hover);
+            animation: linkGlitch 0.5s ease-out;
+        }
+
+        .settings-content {
+            padding: 1.5rem 2rem 2rem 2rem;
+            font-family: 'Joystix', monospace;
+        }
+
+        .settings-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-group label {
+            display: block;
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            filter: url(#glow-white-subtle);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            color: #aaa;
+            filter: blur(0.3px);
+        }
+        
+        .slider-container span {
+            font-size: 0.9rem;
+        }
+
+        .settings-note {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: -1rem;
+            filter: blur(0.3px);
+        }
+
+        /* Sliders customizados */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            background: #333;
+            border: 2px solid #555;
+            cursor: pointer;
+            filter: blur(0.5px);
+            padding: 0;
+            margin: 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 25px;
+            background: rgb(215, 226, 215);
+            border: 2px solid #fff;
+            filter: url(#glow-white-subtle);
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #fff;
+            filter: url(#glow-hover);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 25px;
+            background: rgb(215, 226, 215);
+            border: 2px solid #fff;
+            filter: url(#glow-white-subtle);
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-thumb:hover {
+            background: #fff;
+            filter: url(#glow-hover);
+        }
+        /* FIM: CSS DO MODAL DE CONFIGURAÇÕES */
+
     </style>
 </head>
 <body>
@@ -907,7 +1074,9 @@
     <audio id="vhs-audio" src="assets/audios/StaticVHS.wav" preload="auto"></audio>
     <audio id="static-sound" src="assets/audios/Static.wav" preload="auto"></audio>
     <audio id="music-change-sound" src="assets/audios/MusicChange.wav" preload="auto"></audio>
-
+    
+    <audio id="settings-open-sound" src="assets/audios/hl1-buttonopen.wav" preload="auto"></audio>
+    <audio id="settings-close-sound" src="assets/audios/hl1-buttonclose.wav" preload="auto"></audio>
     <div id="main-content">
         <div class="screen">
             <div class="interference-line"></div>
@@ -918,7 +1087,11 @@
                         <li>> <a data-target="about-content" data-title="ABOUT ME">about me</a></li>
                         <li>> <a data-target="projects-content" data-title="PROJECTS">projects</a></li>
                     </ul>
-                </div>
+                    
+                    <a id="settings-button">
+                        <i class="fas fa-cog"></i> SETTINGS
+                    </a>
+                    </div>
                 <div class="now-playing">
                     <div class="now-playing-content">
                         <div class="player-status">rec ● aguardando...</div>
@@ -982,20 +1155,51 @@
         </div>
     </div>
 
+    <div id="settings-modal-overlay">
+        <div id="settings-modal">
+            <div class="settings-header">
+                <h2>AUDIO SETTINGS</h2>
+                <a id="settings-close-button">&times;</a>
+            </div>
+            <div class="settings-content">
+                <div class="settings-group">
+                    <label for="master-volume">MASTER</label>
+                    <div class="slider-container">
+                        <span>[MIN]</span>
+                        <input type="range" id="master-volume" min="0" max="1" step="0.05" value="0.7">
+                        <span>[MAX]</span>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <label for="vhs-loop-volume">VCR HUM</label>
+                    <div class="slider-container">
+                        <span>[MIN]</span>
+                        <input type="range" id="vhs-loop-volume" min="0" max="1" step="0.05" value="0.3">
+                        <span>[MAX]</span>
+                    </div>
+                </div>
 
-<script>
+                <div class="settings-group">
+                    <label for="sfx-volume">SOUND FX</label>
+                    <div class="slider-container">
+                        <span>[MIN]</span>
+                        <input type="range" id="sfx-volume" min="0" max="1" step="0.05" value="0.8">
+                        <span>[MAX]</span>
+                    </div>
+                </div>
+                <p class="settings-note">(FX: Tape clicks, static, pause, etc.)</p>
+            </div>
+        </div>
+    </div>
+    <script>
         const splashScreen = document.getElementById('splash-screen');
         const tapeContainer = document.getElementById('tape-container');
         const tapeImage = document.getElementById('tape-image');
         const splashMessage = document.querySelector('.splash-message');
-        const vhsOpenSound = document.getElementById('vhs-open-sound');
-        const vhsCloseSound = document.getElementById('vhs-close-sound');
         
         const mainContent = document.getElementById('main-content');
         const vhsFlash = document.getElementById('vhs-flash');
-        const pauseSound = document.getElementById('pause-sound');
-        const staticSound = document.getElementById('static-sound');
-        const musicChangeSound = document.getElementById('music-change-sound');
         const staticGif = document.getElementById('static-gif');
         const navLinks = document.querySelectorAll('.nav-menu a');
         const contentPanels = document.querySelectorAll('.content-panel');
@@ -1005,10 +1209,97 @@
         const glitchNameElement = document.getElementById('glitch-name');
         let glitchNameInterval = null;
 
+        // --- INÍCIO: LÓGICA DE ÁUDIO E CONFIGURAÇÕES ---
+
+        // Volumes base originais dos efeitos
+        const sfxBaseVolumes = {
+            vhsOpen: 0.5,
+            vhsClose: 0.5,
+            pause: 0.4,
+            static: 0.4,
+            musicChange: 0.6,
+            settingsOpen: 0.5, // ATUALIZADO: Volume base (pode ajustar)
+            settingsClose: 0.5 // ATUALIZADO: Volume base (pode ajustar)
+        };
+
+        // Elementos de áudio SFX
+        const sfxAudioElements = {
+            vhsOpen: document.getElementById('vhs-open-sound'),
+            vhsClose: document.getElementById('vhs-close-sound'),
+            pause: document.getElementById('pause-sound'),
+            static: document.getElementById('static-sound'),
+            musicChange: document.getElementById('music-change-sound'),
+            settingsOpen: document.getElementById('settings-open-sound'), // ATUALIZADO
+            settingsClose: document.getElementById('settings-close-sound') // ATUALIZADO
+        };
+        
+        // Elementos do Modal
+        const settingsOverlay = document.getElementById('settings-modal-overlay');
+        const settingsButton = document.getElementById('settings-button');
+        const settingsCloseButton = document.getElementById('settings-close-button');
+
+        // Sliders
+        const masterSlider = document.getElementById('master-volume');
+        const vhsLoopSlider = document.getElementById('vhs-loop-volume');
+        const sfxSlider = document.getElementById('sfx-volume');
+
+        // Variáveis do Web Audio API (para o loop de fundo)
         let audioContext;
         let vhsAudioBuffer;
         let vhsAudioSource = null;
-        let vhsGainNode;
+        let vhsGainNode; // Este será controlado pelo slider 'vhs-loop-volume'
+
+        // Função para atualizar TODOS os volumes com base nos sliders
+        function updateVolumes() {
+            const masterVol = masterSlider.value;
+            const vhsLoopVol = vhsLoopSlider.value;
+            const sfxVol = sfxSlider.value;
+
+            // 1. Atualiza o loop de fundo (Web Audio)
+            // vhsGainNode só existe depois que o usuário clica em 'startSite'
+            if (vhsGainNode) {
+                vhsGainNode.gain.value = vhsLoopVol * masterVol;
+            }
+
+            // 2. Atualiza os SFX (HTML Audio)
+            for (const key in sfxAudioElements) {
+                // Calcula o volume final: Base * Específico * Master
+                // Verifica se o elemento de áudio existe antes de definir o volume
+                if (sfxAudioElements[key]) {
+                    sfxAudioElements[key].volume = (sfxBaseVolumes[key] || 0.5) * sfxVol * masterVol;
+                }
+            }
+        }
+
+        // Funções para abrir/fechar o modal
+        function openSettingsModal() {
+            settingsOverlay.style.display = 'flex';
+            playAudio(sfxAudioElements.settingsOpen); // ATUALIZADO
+        }
+
+        function closeSettingsModal() {
+            settingsOverlay.style.display = 'none';
+            playAudio(sfxAudioElements.settingsClose); // ATUALIZADO
+        }
+
+        // Adiciona os event listeners para o modal e sliders
+        settingsButton.addEventListener('click', openSettingsModal);
+        settingsCloseButton.addEventListener('click', closeSettingsModal);
+        settingsOverlay.addEventListener('click', (e) => {
+            // Fecha o modal se clicar fora da caixa
+            if (e.target === settingsOverlay) {
+                closeSettingsModal();
+            }
+        });
+
+        masterSlider.addEventListener('input', updateVolumes);
+        vhsLoopSlider.addEventListener('input', updateVolumes);
+        sfxSlider.addEventListener('input', updateVolumes);
+
+        // Define os volumes iniciais no carregamento da página
+        updateVolumes();
+
+        // --- FIM: LÓGICA DE ÁUDIO E CONFIGURAÇÕES ---
 
         let currentTrackName = null;
         let isInitialFetch = true;
@@ -1017,13 +1308,9 @@
         const TAPE_ANIMATION_DURATION = 1200;
         let tapeCloseTimeout = null;
         
-        vhsOpenSound.volume = 0.5;
-        vhsCloseSound.volume = 0.5;
-        pauseSound.volume = 0.4;
-        staticSound.volume = 0.4;
-        musicChangeSound.volume = 0.6;
-
         function playAudio(audioElement) {
+            // Certifica que o volume está atualizado antes de tocar
+            updateVolumes(); 
             audioElement.currentTime = 0;
             audioElement.play().catch(error => console.log(`Audio play failed: ${error}`));
         }
@@ -1054,7 +1341,10 @@
                 try {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     vhsGainNode = audioContext.createGain();
-                    vhsGainNode.gain.value = 0.3;
+                    
+                    // ATUALIZADO: Define o ganho inicial do vhsGainNode com base nos sliders
+                    updateVolumes(); 
+                    
                     vhsGainNode.connect(audioContext.destination);
 
                     fetch('assets/audios/StaticVHS.wav')
@@ -1076,7 +1366,7 @@
                 
                 vhsFlash.style.display = 'block';
                 vhsFlash.classList.add('flash-animation');
-                playAudio(pauseSound);
+                playAudio(sfxAudioElements.pause); // Usa a referência correta
 
                 setTimeout(() => {
                     mainContent.style.display = 'flex';
@@ -1090,7 +1380,7 @@
 
             }, 500);
 
-            pauseSound.addEventListener('ended', () => {
+            sfxAudioElements.pause.addEventListener('ended', () => {
                 playSeamlessLoop();
             });
 
@@ -1105,7 +1395,7 @@
             isTapeAnimating = true;
 
             tapeImage.src = `assets/imgs/tapeOpen.gif?t=${new Date().getTime()}`;
-            playAudio(vhsOpenSound);
+            playAudio(sfxAudioElements.vhsOpen); // Usa a referência correta
             splashMessage.style.display = 'block';
 
             setTimeout(() => {
@@ -1118,7 +1408,7 @@
 
             isTapeAnimating = true;
             tapeImage.src = `assets/imgs/tapeClose.gif?t=${new Date().getTime()}`;
-            playAudio(vhsCloseSound);
+            playAudio(sfxAudioElements.vhsClose); // Usa a referência correta
             splashMessage.style.display = 'none';
 
             tapeCloseTimeout = setTimeout(() => {
@@ -1210,14 +1500,14 @@
             rightPanelTitle.style.animation = 'marquee 12s linear infinite, titleGlitch 3s infinite';
 
             staticGif.style.display = 'block';
-            playAudio(staticSound);
+            playAudio(sfxAudioElements.static); // Usa a referência correta
 
             screen.classList.add('chromatic-aberration');
             document.body.style.filter = 'hue-rotate(180deg) contrast(2)';
 
             setTimeout(() => {
                 staticGif.style.display = 'none';
-                staticSound.pause();
+                sfxAudioElements.static.pause(); // Usa a referência correta
                 targetPanel.style.display = 'flex'; 
                 screen.classList.remove('chromatic-aberration');
                 document.body.style.filter = 'none';
@@ -1255,13 +1545,13 @@
             const nowPlayingContent = document.querySelector('.now-playing-content');
             if (!nowPlayingContent) return;
 
-            playAudio(staticSound);
+            playAudio(sfxAudioElements.static); // Usa a referência correta
             nowPlayingContent.classList.add('is-changing');
 
             setTimeout(() => {
                 nowPlayingContent.classList.remove('is-changing');
-                staticSound.pause();
-                staticSound.currentTime = 0;
+                sfxAudioElements.static.pause(); // Usa a referência correta
+                sfxAudioElements.static.currentTime = 0; // Usa a referência correta
             }, 500);
         }
 
@@ -1269,7 +1559,7 @@
             const nowPlayingContent = document.querySelector('.now-playing-content');
             if (!nowPlayingContent) return;
 
-            playAudio(musicChangeSound);
+            playAudio(sfxAudioElements.musicChange); // Usa a referência correta
             nowPlayingContent.classList.add('is-now-playing-glitch');
 
             setTimeout(() => {
@@ -1354,3 +1644,6 @@
                 });
         }
     </script>
+
+</body>
+</html>
