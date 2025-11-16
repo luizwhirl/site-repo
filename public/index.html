@@ -865,7 +865,7 @@
         }
         /* FIM DO CSS PARA BOTÕES SOCIAIS */
 
-        /* INÍCIO: CSS DO MODAL DE CONFIGURAÇÕES */
+        /* INÍCIO: CSS DO MODAL DE CONFIGURAÇÕES (Estilo HL1) */
         #settings-modal-overlay {
             position: fixed;
             top: 0;
@@ -877,59 +877,98 @@
             display: none; /* Começa oculto */
             justify-content: center;
             align-items: center;
-            font-family: 'VSR', monospace;
+            font-family: 'Joystix', monospace; /* Fonte principal do modal */
             backdrop-filter: blur(5px);
-            animation: screenFlicker 4s infinite; /* Reutiliza a animação */
+            animation: screenFlicker 4s infinite;
         }
 
         #settings-modal {
             width: 90%;
-            max-width: 500px;
-            background: #0a0a0a;
-            border: 8px solid #333;
-            border-radius: 12px;
-            color: rgb(230, 241, 230);
+            max-width: 550px;
+            /* Cor de fundo principal do HL1 */
+            background: rgba(40, 44, 40, 0.9); 
+            /* Bordas 3D simples */
+            border: 2px solid #666;
+            border-top-color: #888;
+            border-left-color: #888;
+            border-radius: 4px; /* ATUALIZADO: Quinas levemente arredondadas */
+            color: #c8d2be; /* Cor de texto principal (verde-claro/bege) */
             filter: blur(0.7px) contrast(1.3) saturate(0.8) brightness(0.9);
             box-shadow: 0 0 30px rgba(228, 230, 228, 0.3),
                         0 0 60px rgba(127, 129, 127, 0.2);
             position: relative;
+            overflow: hidden; /* Garante que as quinas arredondadas funcionem */
         }
 
-        .settings-header {
+        /* Scanlines internas para o modal */
+        #settings-modal::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.02),
+                rgba(0, 255, 0, 0.02) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        #settings-modal > * {
+            position: relative; 
+            z-index: 2; /* Garante que o conteúdo fique acima das scanlines */
+        }
+
+        .settings-title-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
-            border-bottom: 8px solid #333;
-        }
-
-        .settings-header h2 {
-            font-size: 2rem;
-            color: #fff;
-            filter: url(#glow-cyan);
-            letter-spacing: 0.2rem;
+            background: #1a1e1a; /* Barra de título mais escura */
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid #222;
+            color: #fff; /* Título branco brilhante */
+            font-size: 1.2rem;
         }
 
         #settings-close-button {
-            font-size: 3rem;
+            font-size: 1.5rem;
             font-family: 'Share Tech Mono', monospace;
-            color: rgb(215, 226, 215);
+            color: #c8d2be;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            filter: url(#glow-white-subtle);
-            transform: translateY(-3px);
         }
         #settings-close-button:hover {
             color: #fff;
-            transform: scale(1.1) translateY(-3px);
+            transform: scale(1.1);
             filter: url(#glow-hover);
-            animation: linkGlitch 0.5s ease-out;
+        }
+
+        .settings-tabs {
+            display: flex;
+            background: #282c28; /* Fundo das abas */
+            border-bottom: 2px solid #111;
+            font-size: 1.1rem;
+        }
+
+        .settings-tab {
+            padding: 0.75rem 1rem;
+            cursor: not-allowed;
+            color: #777; /* Abas inativas */
+        }
+
+        .settings-tab.active {
+            background: rgba(40, 44, 40, 1); /* Fundo da aba ativa (cor do modal) */
+            color: #c8d2be; /* Texto da aba ativa */
+            border-right: 2px solid #222;
+            border-left: 2px solid #222;
         }
 
         .settings-content {
-            padding: 1.5rem 2rem 2rem 2rem;
-            font-family: 'Joystix', monospace;
+            padding: 1.5rem 2rem 1rem 2rem; /* Reduzido padding inferior */
         }
 
         .settings-group {
@@ -938,40 +977,36 @@
 
         .settings-group label {
             display: block;
-            font-size: 1.3rem;
-            color: #fff;
-            margin-bottom: 1rem;
-            filter: url(#glow-white-subtle);
+            font-size: 1.1rem;
+            color: #c8d2be; /* Cor do label */
+            margin-bottom: 0.75rem;
+            filter: none; /* Remove brilho para visual mais limpo */
         }
 
         .slider-container {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-size: 1rem;
-            color: #aaa;
-            filter: blur(0.3px);
+            padding-left: 1rem; /* Indenta o slider */
         }
         
-        .slider-container span {
-            font-size: 0.9rem;
-        }
-
         .settings-note {
             font-size: 0.9rem;
             color: #888;
-            margin-top: -1rem;
+            padding-left: 1rem; /* Indenta a nota */
+            margin-top: 0.5rem;
             filter: blur(0.3px);
         }
 
-        /* Sliders customizados */
+        /* Sliders customizados (estilo HL1) */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 10px;
-            background: #333;
-            border: 2px solid #555;
+            height: 4px;
+            background: #111; /* Fundo do trilho */
+            border: 2px solid #666; /* Bevel escuro */
+            border-top-color: #222;
+            border-left-color: #222;
             cursor: pointer;
             filter: blur(0.5px);
             padding: 0;
@@ -981,30 +1016,126 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 15px;
-            height: 25px;
-            background: rgb(215, 226, 215);
-            border: 2px solid #fff;
-            filter: url(#glow-white-subtle);
+            width: 20px;
+            height: 20px;
+            background: #8a9480; /* Cor do "thumb" (puxador) */
+            border: 2px solid #c8d2be; /* Bevel claro */
+            border-bottom-color: #555;
+            border-right-color: #555;
+            filter: none;
         }
-        input[type="range"]::-webkit-slider-thumb:hover {
-            background: #fff;
-            filter: url(#glow-hover);
+        input[type="range"]::-webkit-slider-thumb:active {
+            background: #7b8572;
+            border-color: #555;
+            border-bottom-color: #c8d2be;
+            border-right-color: #c8d2be;
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 15px;
-            height: 25px;
-            background: rgb(215, 226, 215);
-            border: 2px solid #fff;
-            filter: url(#glow-white-subtle);
+            width: 20px;
+            height: 20px;
+            background: #8a9480;
+            border: 2px solid #c8d2be;
+            border-bottom-color: #555;
+            border-right-color: #555;
             cursor: pointer;
+            border-radius: 0;
         }
-        input[type="range"]::-moz-range-thumb:hover {
-            background: #fff;
-            filter: url(#glow-hover);
+        input[type="range"]::-moz-range-thumb:active {
+            background: #7b8572;
+            border-color: #555;
+            border-bottom-color: #c8d2be;
+            border-right-color: #c8d2be;
+        }
+
+        .settings-footer {
+            border-top: 2px solid #222;
+            background: #1a1e1a; /* Cor da barra de título/rodapé */
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-footer-note {
+            font-size: 0.8rem;
+            color: #777;
+            max-width: 45%;
+            line-height: 1.3;
+            filter: blur(0.3px);
+        }
+
+        .settings-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .settings-button {
+            background: #8a9480; /* Cor do botão (mesma do thumb) */
+            border: 2px solid #c8d2be; /* Bevel claro */
+            border-bottom-color: #555;
+            border-right-color: #555;
+            color: #111; /* Texto escuro no botão */
+            padding: 0.5rem 1.5rem;
+            font-family: 'Joystix', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+        .settings-button:active {
+            border-color: #555;
+            border-bottom-color: #c8d2be;
+            border-right-color: #c8d2be;
+            transform: translate(1px, 1px); /* Efeito de pressionar */
         }
         /* FIM: CSS DO MODAL DE CONFIGURAÇÕES */
+
+
+        /* INÍCIO: CSS DO EASTER EGG */
+        #easter-egg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 3000;
+            display: none; /* Começa oculto */
+            justify-content: center;
+            align-items: center;
+            filter: none; /* Garante que o overlay não tenha blur */
+        }
+
+        #easter-egg-static {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8; 
+            filter: blur(0.8px);
+        }
+        
+        #easter-egg-image {
+            position: relative; 
+            z-index: 3001;
+            opacity: 0.5; /* 50% de opacidade */
+            max-width: 60%; 
+            max-height: 60%;
+            filter: blur(1px) contrast(1.5); 
+        }
+
+        /* ATUALIZADO: CSS para desativar glitches */
+        body.easter-egg-active,
+        body.easter-egg-active .screen,
+        body.easter-egg-active .screen > * {
+            animation: none !important;
+        }
+        body.easter-egg-active .interference-line {
+            display: none !important;
+        }
+        /* FIM: CSS DO EASTER EGG */
 
     </style>
 </head>
@@ -1077,6 +1208,8 @@
     
     <audio id="settings-open-sound" src="assets/audios/hl1-buttonopen.wav" preload="auto"></audio>
     <audio id="settings-close-sound" src="assets/audios/hl1-buttonclose.wav" preload="auto"></audio>
+
+    <audio id="gaster-theme-sound" src="assets/audios/gastertheme.mp3" preload="auto"></audio>
     <div id="main-content">
         <div class="screen">
             <div class="interference-line"></div>
@@ -1091,7 +1224,8 @@
                     <a id="settings-button">
                         <i class="fas fa-cog"></i> SETTINGS
                     </a>
-                    </div>
+
+                </div>
                 <div class="now-playing">
                     <div class="now-playing-content">
                         <div class="player-status">rec ● aguardando...</div>
@@ -1152,44 +1286,62 @@
 
                 <img id="static-gif" src="assets/imgs/static.gif" alt="Static effect">
             </div>
-        </div>
+
+            <div id="easter-egg-overlay">
+                <img id="easter-egg-static" src="assets/imgs/static.gif" alt="Static">
+                <img id="easter-egg-image" src="assets/imgs/gaster.png" alt="???">
+            </div>
+            </div>
     </div>
 
     <div id="settings-modal-overlay">
         <div id="settings-modal">
-            <div class="settings-header">
-                <h2>AUDIO SETTINGS</h2>
+            
+            <div class="settings-title-bar">
+                <span><i class="fas fa-cog" style="margin-right: 0.5rem;"></i> Options</span>
                 <a id="settings-close-button">&times;</a>
             </div>
+
+            <div class="settings-tabs">
+                <span class="settings-tab inactive">Keyboard</span>
+                <span class="settings-tab inactive">Mouse</span>
+                <span class="settings-tab active">Audio</span>
+                <span class="settings-tab inactive">Video</span>
+                <span class="settings-tab inactive">Lock</span>
+            </div>
+
             <div class="settings-content">
                 <div class="settings-group">
-                    <label for="master-volume">MASTER</label>
+                    <label for="master-volume">Master volume</label>
                     <div class="slider-container">
-                        <span>[MIN]</span>
                         <input type="range" id="master-volume" min="0" max="1" step="0.05" value="0.7">
-                        <span>[MAX]</span>
                     </div>
                 </div>
                 
                 <div class="settings-group">
-                    <label for="vhs-loop-volume">VCR HUM</label>
+                    <label for="vhs-loop-volume">VCR Hum volume</label>
                     <div class="slider-container">
-                        <span>[MIN]</span>
                         <input type="range" id="vhs-loop-volume" min="0" max="1" step="0.05" value="0.3">
-                        <span>[MAX]</span>
                     </div>
                 </div>
 
                 <div class="settings-group">
-                    <label for="sfx-volume">SOUND FX</label>
+                    <label for="sfx-volume">Sound effects volume</label>
                     <div class="slider-container">
-                        <span>[MIN]</span>
                         <input type="range" id="sfx-volume" min="0" max="1" step="0.05" value="0.8">
-                        <span>[MAX]</span>
                     </div>
+                    <p class="settings-note">(FX: Tape clicks, static, pause, etc.)</p>
                 </div>
-                <p class="settings-note">(FX: Tape clicks, static, pause, etc.)</p>
             </div>
+
+            <div class="settings-footer">
+                <p class="settings-footer-note">* Audio system powered by Web Audio API & HTML5 Audio.</p>
+                <div class="settings-buttons">
+                    <button id="settings-ok-button" class="settings-button">OK</button>
+                    <button id="settings-cancel-button" class="settings-button">Cancel</button>
+                </div>
+            </div>
+
         </div>
     </div>
     <script>
@@ -1218,8 +1370,9 @@
             pause: 0.4,
             static: 0.4,
             musicChange: 0.6,
-            settingsOpen: 0.5, // ATUALIZADO: Volume base (pode ajustar)
-            settingsClose: 0.5 // ATUALIZADO: Volume base (pode ajustar)
+            settingsOpen: 0.5, 
+            settingsClose: 0.5,
+            gasterTheme: 0.7 
         };
 
         // Elementos de áudio SFX
@@ -1229,14 +1382,18 @@
             pause: document.getElementById('pause-sound'),
             static: document.getElementById('static-sound'),
             musicChange: document.getElementById('music-change-sound'),
-            settingsOpen: document.getElementById('settings-open-sound'), // ATUALIZADO
-            settingsClose: document.getElementById('settings-close-sound') // ATUALIZADO
+            settingsOpen: document.getElementById('settings-open-sound'), 
+            settingsClose: document.getElementById('settings-close-sound'),
+            gasterTheme: document.getElementById('gaster-theme-sound') 
         };
         
         // Elementos do Modal
         const settingsOverlay = document.getElementById('settings-modal-overlay');
         const settingsButton = document.getElementById('settings-button');
         const settingsCloseButton = document.getElementById('settings-close-button');
+        const settingsOkButton = document.getElementById('settings-ok-button');
+        const settingsCancelButton = document.getElementById('settings-cancel-button');
+
 
         // Sliders
         const masterSlider = document.getElementById('master-volume');
@@ -1247,7 +1404,32 @@
         let audioContext;
         let vhsAudioBuffer;
         let vhsAudioSource = null;
-        let vhsGainNode; // Este será controlado pelo slider 'vhs-loop-volume'
+        let vhsGainNode; 
+
+        // Funções para salvar e carregar no localStorage
+        function saveSettings() {
+            localStorage.setItem('atvn-masterVolume', masterSlider.value);
+            localStorage.setItem('atvn-vhsVolume', vhsLoopSlider.value);
+            localStorage.setItem('atvn-sfxVolume', sfxSlider.value);
+        }
+
+        function loadSettings() {
+            const masterVol = localStorage.getItem('atvn-masterVolume');
+            const vhsVol = localStorage.getItem('atvn-vhsVolume');
+            const sfxVol = localStorage.getItem('atvn-sfxVolume');
+
+            if (masterVol !== null) {
+                masterSlider.value = masterVol;
+            }
+            if (vhsVol !== null) {
+                vhsLoopSlider.value = vhsVol;
+            }
+            if (sfxVol !== null) {
+                sfxSlider.value = sfxVol;
+            }
+            
+            updateVolumes(); 
+        }
 
         // Função para atualizar TODOS os volumes com base nos sliders
         function updateVolumes() {
@@ -1255,16 +1437,11 @@
             const vhsLoopVol = vhsLoopSlider.value;
             const sfxVol = sfxSlider.value;
 
-            // 1. Atualiza o loop de fundo (Web Audio)
-            // vhsGainNode só existe depois que o usuário clica em 'startSite'
             if (vhsGainNode) {
                 vhsGainNode.gain.value = vhsLoopVol * masterVol;
             }
 
-            // 2. Atualiza os SFX (HTML Audio)
             for (const key in sfxAudioElements) {
-                // Calcula o volume final: Base * Específico * Master
-                // Verifica se o elemento de áudio existe antes de definir o volume
                 if (sfxAudioElements[key]) {
                     sfxAudioElements[key].volume = (sfxBaseVolumes[key] || 0.5) * sfxVol * masterVol;
                 }
@@ -1274,32 +1451,111 @@
         // Funções para abrir/fechar o modal
         function openSettingsModal() {
             settingsOverlay.style.display = 'flex';
-            playAudio(sfxAudioElements.settingsOpen); // ATUALIZADO
+            playAudio(sfxAudioElements.settingsOpen); 
         }
 
         function closeSettingsModal() {
             settingsOverlay.style.display = 'none';
-            playAudio(sfxAudioElements.settingsClose); // ATUALIZADO
+            playAudio(sfxAudioElements.settingsClose);
         }
 
         // Adiciona os event listeners para o modal e sliders
         settingsButton.addEventListener('click', openSettingsModal);
         settingsCloseButton.addEventListener('click', closeSettingsModal);
+        settingsOkButton.addEventListener('click', closeSettingsModal);
+        settingsCancelButton.addEventListener('click', closeSettingsModal);
+
         settingsOverlay.addEventListener('click', (e) => {
-            // Fecha o modal se clicar fora da caixa
             if (e.target === settingsOverlay) {
                 closeSettingsModal();
             }
         });
 
-        masterSlider.addEventListener('input', updateVolumes);
-        vhsLoopSlider.addEventListener('input', updateVolumes);
-        sfxSlider.addEventListener('input', updateVolumes);
+        masterSlider.addEventListener('input', () => {
+            updateVolumes();
+            saveSettings();
+        });
+        vhsLoopSlider.addEventListener('input', () => {
+            updateVolumes();
+            saveSettings();
+        });
+        sfxSlider.addEventListener('input', () => {
+            updateVolumes();
+            saveSettings();
+        });
 
-        // Define os volumes iniciais no carregamento da página
-        updateVolumes();
+        loadSettings();
 
         // --- FIM: LÓGICA DE ÁUDIO E CONFIGURAÇÕES ---
+
+        // --- INÍCIO: LÓGICA DO EASTER EGG ---
+        let navClickTimestamps = [];
+        let isGasterEventActive = false;
+        const GASTER_CLICK_COUNT = 5;
+        const GASTER_CLICK_WINDOW = 3000; // 5 cliques em 3 segundos
+
+        // ATUALIZADO: Nova função de fade out
+        function fadeAudioOut(audioElement, duration = 500) {
+            if (!audioElement || audioElement.volume === 0) {
+                if(audioElement) {
+                    audioElement.pause();
+                    audioElement.currentTime = 0;
+                }
+                return;
+            }
+        
+            const baseVolume = audioElement.volume; 
+            const fadeSteps = 20;
+            const stepDuration = duration / fadeSteps;
+            const volumeStep = baseVolume / fadeSteps;
+            let currentVolume = baseVolume;
+        
+            const fadeInterval = setInterval(() => {
+                currentVolume -= volumeStep;
+                if (currentVolume <= 0) {
+                    currentVolume = 0;
+                    clearInterval(fadeInterval);
+                    audioElement.pause();
+                    audioElement.currentTime = 0;
+                    // Restaura o volume original (baseado no slider) para a próxima vez
+                    updateVolumes(); 
+                }
+                // Aplica o volume diretamente, sem filtros
+                audioElement.volume = currentVolume;
+            }, stepDuration);
+        }
+
+        function triggerGasterEvent() {
+            isGasterEventActive = true;
+            navClickTimestamps = []; 
+
+            // ATUALIZADO: Para glitches e som de fundo
+            document.body.classList.add('easter-egg-active');
+            stopSeamlessLoop();
+
+            const overlay = document.getElementById('easter-egg-overlay');
+            overlay.style.display = 'flex';
+            
+            // ATUALIZADO: Toca estática, e então toca tema + fade da estática
+            playAudio(sfxAudioElements.static);
+            playAudio(sfxAudioElements.gasterTheme);
+            fadeAudioOut(sfxAudioElements.static, 500); // 500ms de fade
+        }
+
+        // Listener para desligar o evento quando o áudio terminar
+        sfxAudioElements.gasterTheme.addEventListener('ended', () => {
+            const overlay = document.getElementById('easter-egg-overlay');
+            overlay.style.display = 'none'; 
+            isGasterEventActive = false; 
+
+            // ATUALIZADO: Restaura glitches e som de fundo
+            document.body.classList.remove('easter-egg-active');
+            playSeamlessLoop();
+            // Garante que o volume da estática foi resetado
+            updateVolumes();
+        });
+        // --- FIM: LÓGICA DO EASTER EGG ---
+
 
         let currentTrackName = null;
         let isInitialFetch = true;
@@ -1309,13 +1565,13 @@
         let tapeCloseTimeout = null;
         
         function playAudio(audioElement) {
-            // Certifica que o volume está atualizado antes de tocar
             updateVolumes(); 
             audioElement.currentTime = 0;
             audioElement.play().catch(error => console.log(`Audio play failed: ${error}`));
         }
 
         function playSeamlessLoop() {
+            if (isGasterEventActive) return; // Não toca o chiado durante o easter egg
             if (!audioContext || !vhsAudioBuffer || vhsAudioSource) return;
             if (audioContext.state === 'suspended') audioContext.resume();
             
@@ -1342,7 +1598,6 @@
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     vhsGainNode = audioContext.createGain();
                     
-                    // ATUALIZADO: Define o ganho inicial do vhsGainNode com base nos sliders
                     updateVolumes(); 
                     
                     vhsGainNode.connect(audioContext.destination);
@@ -1366,7 +1621,7 @@
                 
                 vhsFlash.style.display = 'block';
                 vhsFlash.classList.add('flash-animation');
-                playAudio(sfxAudioElements.pause); // Usa a referência correta
+                playAudio(sfxAudioElements.pause);
 
                 setTimeout(() => {
                     mainContent.style.display = 'flex';
@@ -1395,7 +1650,7 @@
             isTapeAnimating = true;
 
             tapeImage.src = `assets/imgs/tapeOpen.gif?t=${new Date().getTime()}`;
-            playAudio(sfxAudioElements.vhsOpen); // Usa a referência correta
+            playAudio(sfxAudioElements.vhsOpen);
             splashMessage.style.display = 'block';
 
             setTimeout(() => {
@@ -1408,7 +1663,7 @@
 
             isTapeAnimating = true;
             tapeImage.src = `assets/imgs/tapeClose.gif?t=${new Date().getTime()}`;
-            playAudio(sfxAudioElements.vhsClose); // Usa a referência correta
+            playAudio(sfxAudioElements.vhsClose);
             splashMessage.style.display = 'none';
 
             tapeCloseTimeout = setTimeout(() => {
@@ -1424,12 +1679,13 @@
                 stopSeamlessLoop();
             } else {
                 if (mainContent.style.display === 'flex') {
-                    playSeamlessLoop();
+                    playSeamlessLoop(); // Retoma o chiado se a aba voltar
                 }
             }
         });
 
         function randomGlitch() {
+            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
             if (Math.random() < 0.1) {
                 screen.classList.add('chromatic-aberration');
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${1 + Math.random() * 0.5})`;
@@ -1443,6 +1699,7 @@
         setInterval(randomGlitch, 1500);
 
         function createInterferenceLine() {
+            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
             const line = document.createElement('div');
             line.className = 'interference-line';
             line.style.animationDelay = Math.random() * 3 + 's';
@@ -1456,6 +1713,7 @@
         setInterval(createInterferenceLine, 8000);
 
         function colorShift() {
+            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
             if (Math.random() < 0.05) {
                 const hue = Math.random() * 60 - 30;
                 const brightness = 0.9 + Math.random() * 0.2;
@@ -1500,14 +1758,14 @@
             rightPanelTitle.style.animation = 'marquee 12s linear infinite, titleGlitch 3s infinite';
 
             staticGif.style.display = 'block';
-            playAudio(sfxAudioElements.static); // Usa a referência correta
+            playAudio(sfxAudioElements.static); // Toca o som de estática normal
 
             screen.classList.add('chromatic-aberration');
             document.body.style.filter = 'hue-rotate(180deg) contrast(2)';
 
             setTimeout(() => {
                 staticGif.style.display = 'none';
-                sfxAudioElements.static.pause(); // Usa a referência correta
+                sfxAudioElements.static.pause();
                 targetPanel.style.display = 'flex'; 
                 screen.classList.remove('chromatic-aberration');
                 document.body.style.filter = 'none';
@@ -1521,6 +1779,22 @@
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+
+                if (isGasterEventActive) return; 
+
+                const now = new Date().getTime();
+                navClickTimestamps.push(now);
+                if (navClickTimestamps.length > GASTER_CLICK_COUNT) {
+                    navClickTimestamps.shift();
+                }
+
+                if (navClickTimestamps.length === GASTER_CLICK_COUNT) {
+                    if (now - navClickTimestamps[0] < GASTER_CLICK_WINDOW) {
+                        triggerGasterEvent(); 
+                        return; 
+                    }
+                }
+
                 const targetId = link.getAttribute('data-target');
                 const title = link.getAttribute('data-title');
                 showContent(targetId, title);
@@ -1528,6 +1802,7 @@
         });
 
         function screenDistortion() {
+            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
             if (Math.random() < 0.03) {
                 const skew = Math.random() * 2 - 1;
                 const scale = 0.998 + Math.random() * 0.004;
@@ -1542,24 +1817,26 @@
         setInterval(screenDistortion, 2000);
         
         function triggerTrackChangeGlitch() {
+            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
             const nowPlayingContent = document.querySelector('.now-playing-content');
             if (!nowPlayingContent) return;
 
-            playAudio(sfxAudioElements.static); // Usa a referência correta
+            playAudio(sfxAudioElements.static);
             nowPlayingContent.classList.add('is-changing');
 
             setTimeout(() => {
                 nowPlayingContent.classList.remove('is-changing');
-                sfxAudioElements.static.pause(); // Usa a referência correta
-                sfxAudioElements.static.currentTime = 0; // Usa a referência correta
+                sfxAudioElements.static.pause();
+                sfxAudioElements.static.currentTime = 0;
             }, 500);
         }
 
         function triggerNowPlayingGlitch() {
+            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
             const nowPlayingContent = document.querySelector('.now-playing-content');
             if (!nowPlayingContent) return;
 
-            playAudio(sfxAudioElements.musicChange); // Usa a referência correta
+            playAudio(sfxAudioElements.musicChange);
             nowPlayingContent.classList.add('is-now-playing-glitch');
 
             setTimeout(() => {
