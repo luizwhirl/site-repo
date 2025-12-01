@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        /* Reset */
         * {
             margin: 0;
             padding: 0;
@@ -42,7 +41,7 @@
             position: relative;
             backdrop-filter: contrast(1.1) brightness(1.1) saturate(1.05);
             filter: blur(0.5px) contrast(1.2) brightness(0.95);
-            will-change: filter; /* Optimization */
+            will-change: filter;
         }
 
         #tv-background {
@@ -60,7 +59,7 @@
                 rgba(0, 0, 0, 0.9) 100%
             );
             animation: tvGlow 3s ease-in-out infinite alternate;
-            will-change: opacity, transform, filter; /* Optimization */
+            will-change: opacity, transform, filter;
         }
 
         @keyframes tvGlow {
@@ -106,7 +105,7 @@
                 rgba(0, 0, 0, 0.8) 100%
             );
             animation: vignettePulse 4s ease-in-out infinite;
-            will-change: opacity; /* Optimization */
+            will-change: opacity;
         }
 
         @keyframes vignettePulse {
@@ -131,7 +130,7 @@
             z-index: 1000;
             filter: blur(0.8px);
             transition: opacity 0.5s ease-out;
-            will-change: opacity; /* Optimization */
+            will-change: opacity;
         }
 
         #tape-container {
@@ -158,9 +157,8 @@
             transform: translateX(-50%);
             width: 100%;
             pointer-events: none;
-            will-change: opacity; /* Optimization */
+            will-change: opacity;
         }
-
 
         #vhs-flash {
             position: fixed;
@@ -172,7 +170,7 @@
             z-index: 999;
             display: none;
             opacity: 0;
-            will-change: opacity; /* Optimization */
+            will-change: opacity;
         }
 
         .flash-animation {
@@ -203,7 +201,7 @@
             opacity: 0;
             transition: opacity 0.3s ease-in;
             filter: blur(0.7px) brightness(0.9);
-            will-change: opacity; /* Optimization */
+            will-change: opacity;
         }
 
         #main-content.show {
@@ -226,7 +224,7 @@
             background: #111;
             animation: screenFlicker 4s infinite;
             filter: blur(0.8px) contrast(1.3) saturate(0.8);
-            will-change: transform, filter; /* Optimization */
+            will-change: transform, filter;
         }
 
         @keyframes screenFlicker {
@@ -294,7 +292,7 @@
             animation: marquee 12s linear infinite, titleGlitch 3s infinite;
             position: relative;
             filter: url(#glow-cyan); 
-            will-change: transform, filter; /* Optimization */
+            will-change: transform, filter;
         }
 
         @keyframes titleGlitch {
@@ -351,7 +349,7 @@
                 );
             pointer-events: none;
             animation: scanlines 0.1s linear infinite;
-            will-change: transform; /* Optimization */
+            will-change: transform;
         }
 
         @keyframes scanlines {
@@ -372,7 +370,7 @@
             transform-origin: center center;
             animation: subtleGlitch 4s infinite;
             filter: url(#glow-cyan);
-            will-change: transform, filter; /* Optimization */
+            will-change: transform, filter;
         }
 
         @keyframes subtleGlitch {
@@ -422,7 +420,7 @@
             transition: all 0.3s ease;
             display: inline-block;
             filter: url(#glow-white-subtle);
-            will-change: transform, filter, color; /* Optimization */
+            will-change: transform, filter, color;
         }
 
         .nav-menu a:hover {
@@ -440,7 +438,6 @@
             80% { transform: translateX(6px); }
         }
 
-        /* INÍCIO: CSS DO BOTÃO DE CONFIGURAÇÕES */
         #settings-button {
             font-size: 1.5rem;
             color: rgb(215, 226, 215);
@@ -449,7 +446,7 @@
             transition: all 0.3s ease;
             display: inline-block;
             filter: url(#glow-white-subtle);
-            margin-top: 3rem; /* Espaçamento */
+            margin-top: 3rem;
             will-change: transform, filter, color;
         }
 
@@ -463,8 +460,6 @@
         #settings-button i {
             margin-right: 0.5rem;
         }
-        /* FIM: CSS DO BOTÃO DE CONFIGURAÇÕES */
-
 
         .now-playing {
             border-top: 8px solid #333;
@@ -477,7 +472,7 @@
         
         .now-playing-content {
             animation: playerFlicker 6s infinite;
-            will-change: transform, filter, opacity; /* Optimization */
+            will-change: transform, filter, opacity;
         }
 
         .now-playing-content.is-changing {
@@ -518,7 +513,7 @@
             margin-bottom: 0.5rem;
             animation: recBlink 2s infinite;
             filter: url(#glow-red); 
-            will-change: opacity; /* Optimization */
+            will-change: opacity;
         }
 
         @keyframes recBlink {
@@ -541,7 +536,7 @@
             animation: artGlitch 8s infinite;
             flex-shrink: 0;
             filter: blur(0.3px);
-            will-change: filter; /* Optimization */
+            will-change: filter;
         }
 
         @keyframes artGlitch {
@@ -581,7 +576,7 @@
             letter-spacing: 0.3rem;
             animation: welcomeFlicker 2s infinite;
             filter: url(#glow-cyan); 
-            will-change: opacity, filter; /* Optimization */
+            will-change: opacity, filter;
         }
 
         @keyframes welcomeFlicker {
@@ -607,7 +602,7 @@
             max-width: 400px;
             animation: textFlicker 7s infinite;
             filter: blur(0.3px);
-            will-change: opacity, filter; /* Optimization */
+            will-change: opacity, filter;
         }
 
         @keyframes textFlicker {
@@ -696,7 +691,7 @@
             pointer-events: none;
             z-index: 10;
             animation: scanlinesMove 0.1s linear infinite;
-            will-change: transform; /* Optimization */
+            will-change: transform;
         }
 
         @keyframes scanlinesMove {
@@ -715,7 +710,7 @@
             animation: screenNoise 0.16s infinite;
             pointer-events: none;
             z-index: 9;
-            will-change: opacity, background; /* Optimization */
+            will-change: opacity, background;
         }
 
         @keyframes screenNoise {
@@ -749,7 +744,7 @@
             animation: interferenceMove 3s linear infinite;
             z-index: 15;
             filter: blur(0.5px);
-            will-change: top, opacity; /* Optimization */
+            will-change: top, opacity;
         }
 
         @keyframes interferenceMove {
@@ -825,7 +820,6 @@
             50% { opacity: 0.8; }
         }
 
-        /* INÍCIO DO CSS PARA BOTÕES SOCIAIS */
         .social-links {
             display: flex;
             flex-direction: column;
@@ -847,7 +841,7 @@
             background-color: transparent;
             transition: all 0.3s ease;
             filter: url(#glow-white-subtle);
-            will-change: transform, filter, background-color, border-color, color, box-shadow; /* Optimization */
+            will-change: transform, filter, background-color, border-color, color, box-shadow;
         }
         
         .social-button i {
@@ -863,9 +857,7 @@
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
             animation: linkGlitch 0.5s ease-out;
         }
-        /* FIM DO CSS PARA BOTÕES SOCIAIS */
 
-        /* INÍCIO: CSS DO MODAL DE CONFIGURAÇÕES (Estilo HL1) */
         #settings-modal-overlay {
             position: fixed;
             top: 0;
@@ -874,10 +866,10 @@
             height: 100vh;
             background: rgba(0, 0, 0, 0.7);
             z-index: 2000;
-            display: none; /* Começa oculto */
+            display: none;
             justify-content: center;
             align-items: center;
-            font-family: 'Joystix', monospace; /* Fonte principal do modal */
+            font-family: 'Joystix', monospace;
             backdrop-filter: blur(5px);
             animation: screenFlicker 4s infinite;
         }
@@ -885,22 +877,19 @@
         #settings-modal {
             width: 90%;
             max-width: 550px;
-            /* Cor de fundo principal do HL1 */
             background: rgba(40, 44, 40, 0.9); 
-            /* Bordas 3D simples */
             border: 2px solid #666;
             border-top-color: #888;
             border-left-color: #888;
-            border-radius: 4px; /* ATUALIZADO: Quinas levemente arredondadas */
-            color: #c8d2be; /* Cor de texto principal (verde-claro/bege) */
+            border-radius: 4px;
+            color: #c8d2be;
             filter: blur(0.7px) contrast(1.3) saturate(0.8) brightness(0.9);
             box-shadow: 0 0 30px rgba(228, 230, 228, 0.3),
                         0 0 60px rgba(127, 129, 127, 0.2);
             position: relative;
-            overflow: hidden; /* Garante que as quinas arredondadas funcionem */
+            overflow: hidden;
         }
 
-        /* Scanlines internas para o modal */
         #settings-modal::before {
             content: "";
             position: absolute;
@@ -919,17 +908,17 @@
 
         #settings-modal > * {
             position: relative; 
-            z-index: 2; /* Garante que o conteúdo fique acima das scanlines */
+            z-index: 2;
         }
 
         .settings-title-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #1a1e1a; /* Barra de título mais escura */
+            background: #1a1e1a;
             padding: 0.5rem 1rem;
             border-bottom: 2px solid #222;
-            color: #fff; /* Título branco brilhante */
+            color: #fff;
             font-size: 1.2rem;
         }
 
@@ -949,7 +938,7 @@
 
         .settings-tabs {
             display: flex;
-            background: #282c28; /* Fundo das abas */
+            background: #282c28;
             border-bottom: 2px solid #111;
             font-size: 1.1rem;
         }
@@ -957,18 +946,18 @@
         .settings-tab {
             padding: 0.75rem 1rem;
             cursor: not-allowed;
-            color: #777; /* Abas inativas */
+            color: #777;
         }
 
         .settings-tab.active {
-            background: rgba(40, 44, 40, 1); /* Fundo da aba ativa (cor do modal) */
-            color: #c8d2be; /* Texto da aba ativa */
+            background: rgba(40, 44, 40, 1);
+            color: #c8d2be;
             border-right: 2px solid #222;
             border-left: 2px solid #222;
         }
 
         .settings-content {
-            padding: 1.5rem 2rem 1rem 2rem; /* Reduzido padding inferior */
+            padding: 1.5rem 2rem 1rem 2rem;
         }
 
         .settings-group {
@@ -978,33 +967,32 @@
         .settings-group label {
             display: block;
             font-size: 1.1rem;
-            color: #c8d2be; /* Cor do label */
+            color: #c8d2be;
             margin-bottom: 0.75rem;
-            filter: none; /* Remove brilho para visual mais limpo */
+            filter: none;
         }
 
         .slider-container {
             display: flex;
             align-items: center;
-            padding-left: 1rem; /* Indenta o slider */
+            padding-left: 1rem;
         }
         
         .settings-note {
             font-size: 0.9rem;
             color: #888;
-            padding-left: 1rem; /* Indenta a nota */
+            padding-left: 1rem;
             margin-top: 0.5rem;
             filter: blur(0.3px);
         }
 
-        /* Sliders customizados (estilo HL1) */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
             height: 4px;
-            background: #111; /* Fundo do trilho */
-            border: 2px solid #666; /* Bevel escuro */
+            background: #111;
+            border: 2px solid #666;
             border-top-color: #222;
             border-left-color: #222;
             cursor: pointer;
@@ -1018,8 +1006,8 @@
             appearance: none;
             width: 20px;
             height: 20px;
-            background: #8a9480; /* Cor do "thumb" (puxador) */
-            border: 2px solid #c8d2be; /* Bevel claro */
+            background: #8a9480;
+            border: 2px solid #c8d2be;
             border-bottom-color: #555;
             border-right-color: #555;
             filter: none;
@@ -1050,7 +1038,7 @@
 
         .settings-footer {
             border-top: 2px solid #222;
-            background: #1a1e1a; /* Cor da barra de título/rodapé */
+            background: #1a1e1a;
             padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
@@ -1071,11 +1059,11 @@
         }
 
         .settings-button {
-            background: #8a9480; /* Cor do botão (mesma do thumb) */
-            border: 2px solid #c8d2be; /* Bevel claro */
+            background: #8a9480;
+            border: 2px solid #c8d2be;
             border-bottom-color: #555;
             border-right-color: #555;
-            color: #111; /* Texto escuro no botão */
+            color: #111;
             padding: 0.5rem 1.5rem;
             font-family: 'Joystix', monospace;
             font-size: 1rem;
@@ -1086,25 +1074,22 @@
             border-color: #555;
             border-bottom-color: #c8d2be;
             border-right-color: #c8d2be;
-            transform: translate(1px, 1px); /* Efeito de pressionar */
+            transform: translate(1px, 1px);
         }
-        /* FIM: CSS DO MODAL DE CONFIGURAÇÕES */
 
-
-        /* INÍCIO: CSS DO EASTER EGG */
-        /* ALTERADO: Agora usa position fixed para cobrir tudo */
         #easter-egg-overlay {
-            position: fixed; /* Mudado de absolute para fixed */
-            top: 0;
-            left: 0;
-            width: 100vw; /* Usa viewport width */
-            height: 100vh; /* Usa viewport height */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120vw;
+            height: 120vh;
             background: #000;
-            z-index: 3000;
-            display: none; /* Começa oculto */
+            z-index: 99999;
+            display: none;
             justify-content: center;
             align-items: center;
-            filter: none; /* Garante que o overlay não tenha blur */
+            pointer-events: auto;
         }
 
         #easter-egg-static {
@@ -1113,21 +1098,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Garante que a imagem preencha o espaço */
-            opacity: 0.8; 
+            object-fit: cover;
+            opacity: 0.8;
             filter: blur(0.8px);
+            z-index: 1;
         }
         
         #easter-egg-image {
             position: relative; 
-            z-index: 3001;
-            opacity: 0.5; /* 50% de opacidade */
+            z-index: 2;
+            opacity: 0.5;
             max-width: 60%; 
             max-height: 60%;
             filter: blur(1px) contrast(1.5); 
         }
 
-        /* ATUALIZADO: CSS para desativar glitches */
         body.easter-egg-active,
         body.easter-egg-active .screen,
         body.easter-egg-active .screen > * {
@@ -1136,7 +1121,6 @@
         body.easter-egg-active .interference-line {
             display: none !important;
         }
-        /* FIM: CSS DO EASTER EGG */
 
     </style>
 </head>
@@ -1290,10 +1274,11 @@
 
             
             </div>
-            <div id="easter-egg-overlay">
-                <img id="easter-egg-static" src="assets/imgs/static.gif" alt="Static">
-                <img id="easter-egg-image" src="assets/imgs/gaster.png" alt="???">
-            </div>
+    </div>
+
+    <div id="easter-egg-overlay">
+        <img id="easter-egg-static" src="assets/imgs/static.gif" alt="Static">
+        <img id="easter-egg-image" src="assets/imgs/gaster.png" alt="???">
     </div>
 
     <div id="settings-modal-overlay">
@@ -1363,9 +1348,6 @@
         const glitchNameElement = document.getElementById('glitch-name');
         let glitchNameInterval = null;
 
-        // --- INÍCIO: LÓGICA DE ÁUDIO E CONFIGURAÇÕES ---
-
-        // Volumes base originais dos efeitos
         const sfxBaseVolumes = {
             vhsOpen: 0.5,
             vhsClose: 0.5,
@@ -1377,7 +1359,6 @@
             gasterTheme: 0.7 
         };
 
-        // Elementos de áudio SFX
         const sfxAudioElements = {
             vhsOpen: document.getElementById('vhs-open-sound'),
             vhsClose: document.getElementById('vhs-close-sound'),
@@ -1389,7 +1370,6 @@
             gasterTheme: document.getElementById('gaster-theme-sound') 
         };
         
-        // Elementos do Modal
         const settingsOverlay = document.getElementById('settings-modal-overlay');
         const settingsButton = document.getElementById('settings-button');
         const settingsCloseButton = document.getElementById('settings-close-button');
@@ -1397,18 +1377,15 @@
         const settingsCancelButton = document.getElementById('settings-cancel-button');
 
 
-        // Sliders
         const masterSlider = document.getElementById('master-volume');
         const vhsLoopSlider = document.getElementById('vhs-loop-volume');
         const sfxSlider = document.getElementById('sfx-volume');
 
-        // Variáveis do Web Audio API (para o loop de fundo)
         let audioContext;
         let vhsAudioBuffer;
         let vhsAudioSource = null;
         let vhsGainNode; 
 
-        // Funções para salvar e carregar no localStorage
         function saveSettings() {
             localStorage.setItem('atvn-masterVolume', masterSlider.value);
             localStorage.setItem('atvn-vhsVolume', vhsLoopSlider.value);
@@ -1433,7 +1410,6 @@
             updateVolumes(); 
         }
 
-        // Função para atualizar TODOS os volumes com base nos sliders
         function updateVolumes() {
             const masterVol = masterSlider.value;
             const vhsLoopVol = vhsLoopSlider.value;
@@ -1450,7 +1426,6 @@
             }
         }
 
-        // Funções para abrir/fechar o modal
         function openSettingsModal() {
             settingsOverlay.style.display = 'flex';
             playAudio(sfxAudioElements.settingsOpen); 
@@ -1461,7 +1436,6 @@
             playAudio(sfxAudioElements.settingsClose);
         }
 
-        // Adiciona os event listeners para o modal e sliders
         settingsButton.addEventListener('click', openSettingsModal);
         settingsCloseButton.addEventListener('click', closeSettingsModal);
         settingsOkButton.addEventListener('click', closeSettingsModal);
@@ -1488,15 +1462,11 @@
 
         loadSettings();
 
-        // --- FIM: LÓGICA DE ÁUDIO E CONFIGURAÇÕES ---
-
-        // --- INÍCIO: LÓGICA DO EASTER EGG ---
         let navClickTimestamps = [];
         let isGasterEventActive = false;
         const GASTER_CLICK_COUNT = 5;
-        const GASTER_CLICK_WINDOW = 3000; // 5 cliques em 3 segundos
+        const GASTER_CLICK_WINDOW = 3000;
 
-        // ATUALIZADO: Nova função de fade out
         function fadeAudioOut(audioElement, duration = 500) {
             if (!audioElement || audioElement.volume === 0) {
                 if(audioElement) {
@@ -1519,10 +1489,8 @@
                     clearInterval(fadeInterval);
                     audioElement.pause();
                     audioElement.currentTime = 0;
-                    // Restaura o volume original (baseado no slider) para a próxima vez
                     updateVolumes(); 
                 }
-                // Aplica o volume diretamente, sem filtros
                 audioElement.volume = currentVolume;
             }, stepDuration);
         }
@@ -1531,26 +1499,18 @@
             isGasterEventActive = true;
             navClickTimestamps = []; 
 
-            // ATUALIZADO: Para glitches e som de fundo
             document.body.classList.add('easter-egg-active');
             stopSeamlessLoop();
 
             const overlay = document.getElementById('easter-egg-overlay');
             overlay.style.display = 'flex';
             
-            // ATUALIZADO: Configurar Loop Infinito e tocar
-            sfxAudioElements.gasterTheme.loop = true; // Agora repete para sempre
+            sfxAudioElements.gasterTheme.loop = true;
             
             playAudio(sfxAudioElements.static);
             playAudio(sfxAudioElements.gasterTheme);
-            fadeAudioOut(sfxAudioElements.static, 500); // 500ms de fade
+            fadeAudioOut(sfxAudioElements.static, 500);
         }
-
-        // ALTERADO: Removido o listener 'ended' que fazia o evento acabar
-        // O evento agora só para se a pessoa recarregar a página
-        
-        // --- FIM: LÓGICA DO EASTER EGG ---
-
 
         let currentTrackName = null;
         let isInitialFetch = true;
@@ -1566,7 +1526,7 @@
         }
 
         function playSeamlessLoop() {
-            if (isGasterEventActive) return; // Não toca o chiado durante o easter egg
+            if (isGasterEventActive) return;
             if (!audioContext || !vhsAudioBuffer || vhsAudioSource) return;
             if (audioContext.state === 'suspended') audioContext.resume();
             
@@ -1674,13 +1634,13 @@
                 stopSeamlessLoop();
             } else {
                 if (mainContent.style.display === 'flex') {
-                    playSeamlessLoop(); // Retoma o chiado se a aba voltar
+                    playSeamlessLoop();
                 }
             }
         });
 
         function randomGlitch() {
-            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
+            if (isGasterEventActive) return;
             if (Math.random() < 0.1) {
                 screen.classList.add('chromatic-aberration');
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${1 + Math.random() * 0.5})`;
@@ -1694,7 +1654,7 @@
         setInterval(randomGlitch, 1500);
 
         function createInterferenceLine() {
-            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
+            if (isGasterEventActive) return;
             const line = document.createElement('div');
             line.className = 'interference-line';
             line.style.animationDelay = Math.random() * 3 + 's';
@@ -1708,7 +1668,7 @@
         setInterval(createInterferenceLine, 8000);
 
         function colorShift() {
-            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
+            if (isGasterEventActive) return;
             if (Math.random() < 0.05) {
                 const hue = Math.random() * 60 - 30;
                 const brightness = 0.9 + Math.random() * 0.2;
@@ -1753,7 +1713,7 @@
             rightPanelTitle.style.animation = 'marquee 12s linear infinite, titleGlitch 3s infinite';
 
             staticGif.style.display = 'block';
-            playAudio(sfxAudioElements.static); // Toca o som de estática normal
+            playAudio(sfxAudioElements.static);
 
             screen.classList.add('chromatic-aberration');
             document.body.style.filter = 'hue-rotate(180deg) contrast(2)';
@@ -1797,7 +1757,7 @@
         });
 
         function screenDistortion() {
-            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
+            if (isGasterEventActive) return;
             if (Math.random() < 0.03) {
                 const skew = Math.random() * 2 - 1;
                 const scale = 0.998 + Math.random() * 0.004;
@@ -1812,7 +1772,7 @@
         setInterval(screenDistortion, 2000);
         
         function triggerTrackChangeGlitch() {
-            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
+            if (isGasterEventActive) return;
             const nowPlayingContent = document.querySelector('.now-playing-content');
             if (!nowPlayingContent) return;
 
@@ -1827,7 +1787,7 @@
         }
 
         function triggerNowPlayingGlitch() {
-            if (isGasterEventActive) return; // ATUALIZADO: Sem glitches durante o evento
+            if (isGasterEventActive) return;
             const nowPlayingContent = document.querySelector('.now-playing-content');
             if (!nowPlayingContent) return;
 
