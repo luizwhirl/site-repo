@@ -62,6 +62,20 @@
             will-change: opacity, transform, filter;
         }
 
+        #kalimba-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; 
+            background: url('assets/imgs/kalimba.gif') no-repeat center center;
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            pointer-events: none;
+        }
+
         @keyframes tvGlow {
             0% {
                 opacity: 0.6;
@@ -96,7 +110,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1;
+            z-index: 0; 
             background: radial-gradient(
                 ellipse 70% 50% at center,
                 transparent 0%,
@@ -202,6 +216,7 @@
             transition: opacity 0.3s ease-in;
             filter: blur(0.7px) brightness(0.9);
             will-change: opacity;
+            z-index: 10;
         }
 
         #main-content.show {
@@ -802,24 +817,6 @@
             }
         }
 
-        #crt-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            background: radial-gradient(ellipse at center, rgba(255,255,255,0.07) 0%, rgba(0,0,0,0.1) 80%);
-            mix-blend-mode: screen;
-            animation: crtPulse 2.4s ease-in-out infinite alternate;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
         .social-links {
             display: flex;
             flex-direction: column;
@@ -945,8 +942,13 @@
 
         .settings-tab {
             padding: 0.75rem 1rem;
-            cursor: not-allowed;
+            cursor: pointer;
             color: #777;
+            transition: all 0.2s ease;
+        }
+        
+        .settings-tab:hover {
+            color: #aab2a0;
         }
 
         .settings-tab.active {
@@ -958,6 +960,13 @@
 
         .settings-content {
             padding: 1.5rem 2rem 1rem 2rem;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
         }
 
         .settings-group {
@@ -1019,21 +1028,10 @@
             border-right-color: #c8d2be;
         }
 
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #8a9480;
-            border: 2px solid #c8d2be;
-            border-bottom-color: #555;
-            border-right-color: #555;
+        input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 10px;
             cursor: pointer;
-            border-radius: 0;
-        }
-        input[type="range"]::-moz-range-thumb:active {
-            background: #7b8572;
-            border-color: #555;
-            border-bottom-color: #c8d2be;
-            border-right-color: #c8d2be;
         }
 
         .settings-footer {
@@ -1173,6 +1171,7 @@
     </svg>
 
     <div id="tv-background"></div>
+    <div id="kalimba-background"></div>
     <div id="tv-vignette"></div>
 
     <div id="splash-screen">
@@ -1195,6 +1194,9 @@
     <audio id="settings-close-sound" src="assets/audios/hl1-buttonclose.wav" preload="auto"></audio>
 
     <audio id="gaster-theme-sound" src="assets/audios/gastertheme.mp3" preload="auto"></audio>
+    
+    <audio id="kalimba-sound" src="assets/audios/kalimba.ogg" preload="auto"></audio>
+
     <div id="main-content">
         <div class="screen">
             <div class="interference-line"></div>
@@ -1292,32 +1294,43 @@
             <div class="settings-tabs">
                 <span class="settings-tab inactive">Keyboard</span>
                 <span class="settings-tab inactive">Mouse</span>
-                <span class="settings-tab active">Audio</span>
+                <span class="settings-tab active" data-tab="audio">Audio</span>
                 <span class="settings-tab inactive">Video</span>
-                <span class="settings-tab inactive">Lock</span>
+                <span class="settings-tab" data-tab="kali">Kali</span>
             </div>
 
             <div class="settings-content">
-                <div class="settings-group">
-                    <label for="master-volume">Master volume</label>
-                    <div class="slider-container">
-                        <input type="range" id="master-volume" min="0" max="1" step="0.05" value="0.7">
+                <div id="tab-audio" class="tab-pane active">
+                    <div class="settings-group">
+                        <label for="master-volume">Master volume</label>
+                        <div class="slider-container">
+                            <input type="range" id="master-volume" min="0" max="1" step="0.05" value="0.7">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <label for="vhs-loop-volume">VCR Hum volume</label>
+                        <div class="slider-container">
+                            <input type="range" id="vhs-loop-volume" min="0" max="1" step="0.05" value="0.3">
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <label for="sfx-volume">Sound effects volume</label>
+                        <div class="slider-container">
+                            <input type="range" id="sfx-volume" min="0" max="1" step="0.05" value="0.8">
+                        </div>
+                        <p class="settings-note">(FX: Tape clicks, static, pause, etc.)</p>
                     </div>
                 </div>
                 
-                <div class="settings-group">
-                    <label for="vhs-loop-volume">VCR Hum volume</label>
-                    <div class="slider-container">
-                        <input type="range" id="vhs-loop-volume" min="0" max="1" step="0.05" value="0.3">
+                <div id="tab-kali" class="tab-pane">
+                    <div class="settings-group">
+                         <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" id="kalimba-checkbox">
+                            kalimba
+                        </label>
                     </div>
-                </div>
-
-                <div class="settings-group">
-                    <label for="sfx-volume">Sound effects volume</label>
-                    <div class="slider-container">
-                        <input type="range" id="sfx-volume" min="0" max="1" step="0.05" value="0.8">
-                    </div>
-                    <p class="settings-note">(FX: Tape clicks, static, pause, etc.)</p>
                 </div>
             </div>
 
@@ -1381,6 +1394,35 @@
         const vhsLoopSlider = document.getElementById('vhs-loop-volume');
         const sfxSlider = document.getElementById('sfx-volume');
 
+        // New Kalimba Logic Variables
+        const kalimbaAudio = document.getElementById('kalimba-sound');
+        const kalimbaCheckbox = document.getElementById('kalimba-checkbox');
+        const kalimbaBackground = document.getElementById('kalimba-background');
+        let isKalimbaActive = false;
+
+        // Settings Tabs Logic
+        const settingsTabs = document.querySelectorAll('.settings-tab');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        settingsTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-tab');
+                if (!target) return; // Ignore non-functional tabs like Keyboard/Mouse
+
+                // Update active tab visual
+                settingsTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Show corresponding content
+                tabPanes.forEach(pane => {
+                    pane.classList.remove('active');
+                    if (pane.id === `tab-${target}`) {
+                        pane.classList.add('active');
+                    }
+                });
+            });
+        });
+
         let audioContext;
         let vhsAudioBuffer;
         let vhsAudioSource = null;
@@ -1411,9 +1453,9 @@
         }
 
         function updateVolumes() {
-            const masterVol = masterSlider.value;
-            const vhsLoopVol = vhsLoopSlider.value;
-            const sfxVol = sfxSlider.value;
+            const masterVol = parseFloat(masterSlider.value);
+            const vhsLoopVol = parseFloat(vhsLoopSlider.value);
+            const sfxVol = parseFloat(sfxSlider.value);
 
             if (vhsGainNode) {
                 vhsGainNode.gain.value = vhsLoopVol * masterVol;
@@ -1424,6 +1466,11 @@
                     sfxAudioElements[key].volume = (sfxBaseVolumes[key] || 0.5) * sfxVol * masterVol;
                 }
             }
+            // Update Kalimba volume relative to master/sfx (treating it as music/sfx)
+            if (kalimbaAudio) {
+                // Not strictly SFX, but music, using master volume
+                kalimbaAudio.baseVolume = 1.0 * masterVol; // Base volume for fading logic
+            }
         }
 
         function openSettingsModal() {
@@ -1431,19 +1478,107 @@
             playAudio(sfxAudioElements.settingsOpen); 
         }
 
-        function closeSettingsModal() {
+        function closeSettingsModal(isOk = false) {
             settingsOverlay.style.display = 'none';
             playAudio(sfxAudioElements.settingsClose);
+
+            if (isOk && kalimbaCheckbox.checked && !isKalimbaActive) {
+                startKalimbaSequence();
+            }
         }
 
+        function startKalimbaSequence() {
+            isKalimbaActive = true;
+            stopSeamlessLoop(); // Stop static noise immediately
+
+            // Fade in background
+            kalimbaBackground.style.opacity = '1';
+
+            // Play audio with fade in
+            kalimbaAudio.currentTime = 0;
+            kalimbaAudio.volume = 0;
+            kalimbaAudio.play();
+            
+            const targetVol = kalimbaAudio.baseVolume || parseFloat(masterSlider.value);
+            fadeInAudio(kalimbaAudio, targetVol, 2000);
+
+            // Calculate duration to trigger fade out before end
+            // Wait for metadata to ensure duration is available
+            if (kalimbaAudio.duration) {
+                scheduleKalimbaEnd(kalimbaAudio.duration);
+            } else {
+                kalimbaAudio.onloadedmetadata = () => {
+                    scheduleKalimbaEnd(kalimbaAudio.duration);
+                };
+            }
+        }
+
+        function scheduleKalimbaEnd(duration) {
+            // Schedule fade out 2 seconds before end
+            const durationMs = duration * 1000;
+            const fadeOutStartMs = Math.max(0, durationMs - 2000);
+
+            setTimeout(() => {
+                fadeOutAudio(kalimbaAudio, 2000);
+                kalimbaBackground.style.opacity = '0'; // Fade out bg
+            }, fadeOutStartMs);
+
+            // Cleanup after full duration
+            setTimeout(() => {
+                endKalimbaSequence();
+            }, durationMs);
+        }
+
+        function endKalimbaSequence() {
+            isKalimbaActive = false;
+            kalimbaCheckbox.checked = false; // Reset checkbox
+            
+            // Resume static noise if page is visible
+            if (!document.hidden) {
+                playSeamlessLoop();
+            }
+        }
+
+        function fadeInAudio(audio, targetVolume, duration) {
+            const steps = 20;
+            const stepTime = duration / steps;
+            const volStep = targetVolume / steps;
+            let currentVol = 0;
+            
+            const interval = setInterval(() => {
+                currentVol += volStep;
+                if (currentVol >= targetVolume) {
+                    currentVol = targetVolume;
+                    clearInterval(interval);
+                }
+                audio.volume = currentVol;
+            }, stepTime);
+        }
+
+        function fadeOutAudio(audio, duration) {
+            const steps = 20;
+            const stepTime = duration / steps;
+            const startVol = audio.volume;
+            const volStep = startVol / steps;
+            
+            const interval = setInterval(() => {
+                audio.volume = Math.max(0, audio.volume - volStep);
+                if (audio.volume <= 0) {
+                    clearInterval(interval);
+                    audio.pause();
+                }
+            }, stepTime);
+        }
+
+
         settingsButton.addEventListener('click', openSettingsModal);
-        settingsCloseButton.addEventListener('click', closeSettingsModal);
-        settingsOkButton.addEventListener('click', closeSettingsModal);
-        settingsCancelButton.addEventListener('click', closeSettingsModal);
+        settingsCloseButton.addEventListener('click', () => closeSettingsModal(false));
+        settingsOkButton.addEventListener('click', () => closeSettingsModal(true));
+        settingsCancelButton.addEventListener('click', () => closeSettingsModal(false));
 
         settingsOverlay.addEventListener('click', (e) => {
             if (e.target === settingsOverlay) {
-                closeSettingsModal();
+                closeSettingsModal(false);
             }
         });
 
@@ -1496,6 +1631,8 @@
         }
 
         function triggerGasterEvent() {
+            if (isKalimbaActive) return; // Prevent if Kalimba is active
+
             isGasterEventActive = true;
             navClickTimestamps = []; 
 
@@ -1520,13 +1657,21 @@
         let tapeCloseTimeout = null;
         
         function playAudio(audioElement) {
+            // Prevent other audios during Kalimba, except allowed ones
+            if (isKalimbaActive) {
+                const allowedIds = ['music-change-sound', 'static-sound', 'settings-open-sound', 'settings-close-sound'];
+                if (!allowedIds.includes(audioElement.id)) {
+                    return;
+                }
+            }
+
             updateVolumes(); 
             audioElement.currentTime = 0;
             audioElement.play().catch(error => console.log(`Audio play failed: ${error}`));
         }
 
         function playSeamlessLoop() {
-            if (isGasterEventActive) return;
+            if (isGasterEventActive || isKalimbaActive) return; // Static shouldn't play in these modes
             if (!audioContext || !vhsAudioBuffer || vhsAudioSource) return;
             if (audioContext.state === 'suspended') audioContext.resume();
             
@@ -1640,7 +1785,7 @@
         });
 
         function randomGlitch() {
-            if (isGasterEventActive) return;
+            if (isGasterEventActive || isKalimbaActive) return; // Disable glitches during special events
             if (Math.random() < 0.1) {
                 screen.classList.add('chromatic-aberration');
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${1 + Math.random() * 0.5})`;
@@ -1654,7 +1799,7 @@
         setInterval(randomGlitch, 1500);
 
         function createInterferenceLine() {
-            if (isGasterEventActive) return;
+            if (isGasterEventActive || isKalimbaActive) return;
             const line = document.createElement('div');
             line.className = 'interference-line';
             line.style.animationDelay = Math.random() * 3 + 's';
@@ -1668,7 +1813,7 @@
         setInterval(createInterferenceLine, 8000);
 
         function colorShift() {
-            if (isGasterEventActive) return;
+            if (isGasterEventActive || isKalimbaActive) return;
             if (Math.random() < 0.05) {
                 const hue = Math.random() * 60 - 30;
                 const brightness = 0.9 + Math.random() * 0.2;
@@ -1757,7 +1902,7 @@
         });
 
         function screenDistortion() {
-            if (isGasterEventActive) return;
+            if (isGasterEventActive || isKalimbaActive) return;
             if (Math.random() < 0.03) {
                 const skew = Math.random() * 2 - 1;
                 const scale = 0.998 + Math.random() * 0.004;
