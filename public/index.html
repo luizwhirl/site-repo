@@ -960,6 +960,7 @@
 
         .settings-content {
             padding: 1.5rem 2rem 1rem 2rem;
+            min-height: 320px;
         }
         
         .tab-pane {
@@ -1394,26 +1395,22 @@
         const vhsLoopSlider = document.getElementById('vhs-loop-volume');
         const sfxSlider = document.getElementById('sfx-volume');
 
-        // New Kalimba Logic Variables
         const kalimbaAudio = document.getElementById('kalimba-sound');
         const kalimbaCheckbox = document.getElementById('kalimba-checkbox');
         const kalimbaBackground = document.getElementById('kalimba-background');
         let isKalimbaActive = false;
 
-        // Settings Tabs Logic
         const settingsTabs = document.querySelectorAll('.settings-tab');
         const tabPanes = document.querySelectorAll('.tab-pane');
 
         settingsTabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const target = tab.getAttribute('data-tab');
-                if (!target) return; // Ignore non-functional tabs like Keyboard/Mouse
+                if (!target) return;
 
-                // Update active tab visual
                 settingsTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
 
-                // Show corresponding content
                 tabPanes.forEach(pane => {
                     pane.classList.remove('active');
                     if (pane.id === `tab-${target}`) {
@@ -1466,10 +1463,8 @@
                     sfxAudioElements[key].volume = (sfxBaseVolumes[key] || 0.5) * sfxVol * masterVol;
                 }
             }
-            // Update Kalimba volume relative to master/sfx (treating it as music/sfx)
             if (kalimbaAudio) {
-                // Not strictly SFX, but music, using master volume
-                kalimbaAudio.baseVolume = 1.0 * masterVol; // Base volume for fading logic
+                kalimbaAudio.baseVolume = 1.0 * masterVol;
             }
         }
 
@@ -1489,12 +1484,10 @@
 
         function startKalimbaSequence() {
             isKalimbaActive = true;
-            stopSeamlessLoop(); // Stop static noise immediately
+            stopSeamlessLoop();
 
-            // Fade in background
             kalimbaBackground.style.opacity = '1';
 
-            // Play audio with fade in
             kalimbaAudio.currentTime = 0;
             kalimbaAudio.volume = 0;
             kalimbaAudio.play();
@@ -1502,8 +1495,6 @@
             const targetVol = kalimbaAudio.baseVolume || parseFloat(masterSlider.value);
             fadeInAudio(kalimbaAudio, targetVol, 2000);
 
-            // Calculate duration to trigger fade out before end
-            // Wait for metadata to ensure duration is available
             if (kalimbaAudio.duration) {
                 scheduleKalimbaEnd(kalimbaAudio.duration);
             } else {
@@ -1514,16 +1505,14 @@
         }
 
         function scheduleKalimbaEnd(duration) {
-            // Schedule fade out 2 seconds before end
             const durationMs = duration * 1000;
             const fadeOutStartMs = Math.max(0, durationMs - 2000);
 
             setTimeout(() => {
                 fadeOutAudio(kalimbaAudio, 2000);
-                kalimbaBackground.style.opacity = '0'; // Fade out bg
+                kalimbaBackground.style.opacity = '0';
             }, fadeOutStartMs);
 
-            // Cleanup after full duration
             setTimeout(() => {
                 endKalimbaSequence();
             }, durationMs);
@@ -1531,9 +1520,8 @@
 
         function endKalimbaSequence() {
             isKalimbaActive = false;
-            kalimbaCheckbox.checked = false; // Reset checkbox
+            kalimbaCheckbox.checked = false;
             
-            // Resume static noise if page is visible
             if (!document.hidden) {
                 playSeamlessLoop();
             }
@@ -1631,7 +1619,7 @@
         }
 
         function triggerGasterEvent() {
-            if (isKalimbaActive) return; // Prevent if Kalimba is active
+            if (isKalimbaActive) return;
 
             isGasterEventActive = true;
             navClickTimestamps = []; 
@@ -1657,7 +1645,6 @@
         let tapeCloseTimeout = null;
         
         function playAudio(audioElement) {
-            // Prevent other audios during Kalimba, except allowed ones
             if (isKalimbaActive) {
                 const allowedIds = ['music-change-sound', 'static-sound', 'settings-open-sound', 'settings-close-sound'];
                 if (!allowedIds.includes(audioElement.id)) {
@@ -1671,7 +1658,7 @@
         }
 
         function playSeamlessLoop() {
-            if (isGasterEventActive || isKalimbaActive) return; // Static shouldn't play in these modes
+            if (isGasterEventActive || isKalimbaActive) return;
             if (!audioContext || !vhsAudioBuffer || vhsAudioSource) return;
             if (audioContext.state === 'suspended') audioContext.resume();
             
@@ -1785,7 +1772,7 @@
         });
 
         function randomGlitch() {
-            if (isGasterEventActive || isKalimbaActive) return; // Disable glitches during special events
+            if (isGasterEventActive || isKalimbaActive) return;
             if (Math.random() < 0.1) {
                 screen.classList.add('chromatic-aberration');
                 document.body.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${1 + Math.random() * 0.5})`;
