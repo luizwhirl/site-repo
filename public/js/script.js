@@ -158,21 +158,26 @@ function updateVideoSettings() {
 }
 
 function resetSettings() {
-    masterSlider.value = 0.7;
-    vhsLoopSlider.value = 0.3;
-    sfxSlider.value = 0.8;
-    
-    videoBrightnessSlider.value = 0.95;
-    videoGlowSlider.value = 0.3;
-    videoScanlinesSlider.value = 0.04;
-    videoBlurSlider.value = 1;
-    crtFlickerToggle.checked = true;
-    randomGlitchesToggle.checked = true;
+    const activeTabPane = document.querySelector('.tab-pane.active');
+    if (!activeTabPane) return;
 
-    kalimbaCheckbox.checked = false;
+    if (activeTabPane.id === 'tab-audio') {
+        masterSlider.value = 0.7;
+        vhsLoopSlider.value = 0.3;
+        sfxSlider.value = 0.8;
+        updateVolumes();
+    } else if (activeTabPane.id === 'tab-video') {
+        videoBrightnessSlider.value = 0.95;
+        videoGlowSlider.value = 0.3;
+        videoScanlinesSlider.value = 0.04;
+        videoBlurSlider.value = 1;
+        crtFlickerToggle.checked = true;
+        randomGlitchesToggle.checked = true;
+        updateVideoSettings();
+    } else if (activeTabPane.id === 'tab-kali') {
+        kalimbaCheckbox.checked = false;
+    }
 
-    updateVolumes();
-    updateVideoSettings();
     saveSettings();
 }
 
