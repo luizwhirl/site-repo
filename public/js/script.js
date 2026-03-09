@@ -41,11 +41,20 @@ const settingsButton = document.getElementById('settings-button');
 const settingsCloseButton = document.getElementById('settings-close-button');
 const settingsOkButton = document.getElementById('settings-ok-button');
 const settingsCancelButton = document.getElementById('settings-cancel-button');
-
+const settingsResetButton = document.getElementById('settings-reset-button');
 
 const masterSlider = document.getElementById('master-volume');
 const vhsLoopSlider = document.getElementById('vhs-loop-volume');
 const sfxSlider = document.getElementById('sfx-volume');
+
+const videoBrightnessSlider = document.getElementById('video-brightness');
+const videoGlowSlider = document.getElementById('video-glow');
+const videoScanlinesSlider = document.getElementById('video-scanlines');
+const videoBlurSlider = document.getElementById('video-blur');
+const crtFlickerToggle = document.getElementById('toggle-crt-flicker');
+const randomGlitchesToggle = document.getElementById('toggle-random-glitches');
+
+let allowRandomGlitches = true;
 
 const kalimbaAudio = document.getElementById('kalimba-sound');
 const kalimbaCheckbox = document.getElementById('kalimba-checkbox');
@@ -81,6 +90,13 @@ function saveSettings() {
     localStorage.setItem('atvn-masterVolume', masterSlider.value);
     localStorage.setItem('atvn-vhsVolume', vhsLoopSlider.value);
     localStorage.setItem('atvn-sfxVolume', sfxSlider.value);
+    
+    localStorage.setItem('atvn-video-brightness', videoBrightnessSlider.value);
+    localStorage.setItem('atvn-video-glow', videoGlowSlider.value);
+    localStorage.setItem('atvn-video-scanlines', videoScanlinesSlider.value);
+    localStorage.setItem('atvn-video-blur', videoBlurSlider.value);
+    localStorage.setItem('atvn-video-flicker', crtFlickerToggle.checked);
+    localStorage.setItem('atvn-video-glitches', randomGlitchesToggle.checked);
 }
 
 function loadSettings() {
@@ -88,17 +104,26 @@ function loadSettings() {
     const vhsVol = localStorage.getItem('atvn-vhsVolume');
     const sfxVol = localStorage.getItem('atvn-sfxVolume');
 
-    if (masterVol !== null) {
-        masterSlider.value = masterVol;
-    }
-    if (vhsVol !== null) {
-        vhsLoopSlider.value = vhsVol;
-    }
-    if (sfxVol !== null) {
-        sfxSlider.value = sfxVol;
-    }
+    if (masterVol !== null) masterSlider.value = masterVol;
+    if (vhsVol !== null) vhsLoopSlider.value = vhsVol;
+    if (sfxVol !== null) sfxSlider.value = sfxVol;
     
+    const vBright = localStorage.getItem('atvn-video-brightness');
+    const vGlow = localStorage.getItem('atvn-video-glow');
+    const vScan = localStorage.getItem('atvn-video-scanlines');
+    const vBlur = localStorage.getItem('atvn-video-blur');
+    const crtFlicker = localStorage.getItem('atvn-video-flicker');
+    const randomGlitches = localStorage.getItem('atvn-video-glitches');
+
+    if (vBright !== null) videoBrightnessSlider.value = vBright;
+    if (vGlow !== null) videoGlowSlider.value = vGlow;
+    if (vScan !== null) videoScanlinesSlider.value = vScan;
+    if (vBlur !== null) videoBlurSlider.value = vBlur;
+    if (crtFlicker !== null) crtFlickerToggle.checked = crtFlicker === 'true';
+    if (randomGlitches !== null) randomGlitchesToggle.checked = randomGlitches === 'true';
+
     updateVolumes(); 
+    updateVideoSettings();
 }
 
 function updateVolumes() {
@@ -119,6 +144,50 @@ function updateVolumes() {
         kalimbaAudio.baseVolume = 1.0 * masterVol;
     }
 }
+
+function updateVideoSettings() {
+    document.documentElement.style.setProperty('--site-brightness', videoBrightnessSlider.value);
+    document.documentElement.style.setProperty('--box-glow-alpha', videoGlowSlider.value);
+    document.documentElement.style.setProperty('--scanline-alpha', videoScanlinesSlider.value);
+    document.documentElement.style.setProperty('--blur-mult', videoBlurSlider.value);
+
+    if (!crtFlickerToggle.checked) document.body.classList.add('disable-flicker');
+    else document.body.classList.remove('disable-flicker');
+
+    allowRandomGlitches = randomGlitchesToggle.checked;
+}
+
+function resetSettings() {
+    masterSlider.value = 0.7;
+    vhsLoopSlider.value = 0.3;
+    sfxSlider.value = 0.8;
+    
+    videoBrightnessSlider.value = 0.95;
+    videoGlowSlider.value = 0.3;
+    videoScanlinesSlider.value = 0.04;
+    videoBlurSlider.value = 1;
+    crtFlickerToggle.checked = true;
+    randomGlitchesToggle.checked = true;
+
+    kalimbaCheckbox.checked = false;
+
+    updateVolumes();
+    updateVideoSettings();
+    saveSettings();
+}
+
+[videoBrightnessSlider, videoGlowSlider, videoScanlinesSlider, videoBlurSlider, crtFlickerToggle, randomGlitchesToggle].forEach(input => {
+    if(input) {
+        input.addEventListener('input', () => {
+            updateVideoSettings();
+            saveSettings();
+        });
+        input.addEventListener('change', () => {
+            updateVideoSettings();
+            saveSettings();
+        });
+    }
+});
 
 function openSettingsModal() {
     settingsOverlay.style.display = 'flex';
@@ -210,11 +279,11 @@ function fadeOutAudio(audio, duration) {
     }, stepTime);
 }
 
-
 settingsButton.addEventListener('click', openSettingsModal);
 settingsCloseButton.addEventListener('click', () => closeSettingsModal(false));
 settingsOkButton.addEventListener('click', () => closeSettingsModal(true));
 settingsCancelButton.addEventListener('click', () => closeSettingsModal(false));
+settingsResetButton.addEventListener('click', resetSettings);
 
 settingsOverlay.addEventListener('click', (e) => {
     if (e.target === settingsOverlay) {
@@ -424,7 +493,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 function randomGlitch() {
-    if (isGasterEventActive || isKalimbaActive) return;
+    if (!allowRandomGlitches || isGasterEventActive || isKalimbaActive) return;
     if (Math.random() < 0.1) {
         screen.classList.add('chromatic-aberration');
         document.body.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${1 + Math.random() * 0.5})`;
@@ -438,7 +507,7 @@ function randomGlitch() {
 setInterval(randomGlitch, 1500);
 
 function createInterferenceLine() {
-    if (isGasterEventActive || isKalimbaActive) return;
+    if (!allowRandomGlitches || isGasterEventActive || isKalimbaActive) return;
     const line = document.createElement('div');
     line.className = 'interference-line';
     line.style.animationDelay = Math.random() * 3 + 's';
@@ -452,7 +521,7 @@ function createInterferenceLine() {
 setInterval(createInterferenceLine, 8000);
 
 function colorShift() {
-    if (isGasterEventActive || isKalimbaActive) return;
+    if (!allowRandomGlitches || isGasterEventActive || isKalimbaActive) return;
     if (Math.random() < 0.05) {
         const hue = Math.random() * 60 - 30;
         const brightness = 0.9 + Math.random() * 0.2;
@@ -541,7 +610,7 @@ navLinks.forEach(link => {
 });
 
 function screenDistortion() {
-    if (isGasterEventActive || isKalimbaActive) return;
+    if (!allowRandomGlitches || isGasterEventActive || isKalimbaActive) return;
     if (Math.random() < 0.03) {
         const skew = Math.random() * 2 - 1;
         const scale = 0.998 + Math.random() * 0.004;

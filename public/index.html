@@ -192,7 +192,7 @@
                 <span class="settings-tab inactive">Keyboard</span>
                 <span class="settings-tab inactive">Mouse</span>
                 <span class="settings-tab active" data-tab="audio">Audio</span>
-                <span class="settings-tab inactive">Video</span>
+                <span class="settings-tab inactive" data-tab="video">Video</span>
                 <span class="settings-tab" data-tab="kali">Kali</span>
             </div>
 
@@ -217,7 +217,45 @@
                         <div class="slider-container">
                             <input type="range" id="sfx-volume" min="0" max="1" step="0.05" value="0.8">
                         </div>
-                        <p class="settings-note">(FX: Tape clicks, static, pause, etc.)</p>
+                    </div>
+                </div>
+
+                <div id="tab-video" class="tab-pane">
+                    <div class="settings-group">
+                        <label for="video-brightness">Brilho do Site</label>
+                        <div class="slider-container">
+                            <input type="range" id="video-brightness" min="0.5" max="1.5" step="0.05" value="0.95">
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label for="video-glow">Brilho Externo da Tela</label>
+                        <div class="slider-container">
+                            <input type="range" id="video-glow" min="0" max="1" step="0.05" value="0.3">
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label for="video-scanlines">Opacidade das Scanlines</label>
+                        <div class="slider-container">
+                            <input type="range" id="video-scanlines" min="0" max="0.1" step="0.01" value="0.04">
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label for="video-blur">Intensidade do Blur/Glow</label>
+                        <div class="slider-container">
+                            <input type="range" id="video-blur" min="0" max="2" step="0.1" value="1">
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" id="toggle-crt-flicker" checked>
+                            CRT Flicker & Pulse
+                        </label>
+                    </div>
+                    <div class="settings-group">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" id="toggle-random-glitches" checked>
+                            Random Glitches
+                        </label>
                     </div>
                 </div>
                 
@@ -234,6 +272,7 @@
             <div class="settings-footer">
                 <p class="settings-footer-note">* Audio system powered by Web Audio API & HTML5 Audio.</p>
                 <div class="settings-buttons">
+                    <button id="settings-reset-button" class="settings-button">Reset</button>
                     <button id="settings-ok-button" class="settings-button">OK</button>
                     <button id="settings-cancel-button" class="settings-button">Cancel</button>
                 </div>
