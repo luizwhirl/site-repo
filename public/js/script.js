@@ -1,3 +1,5 @@
+let aaaaaMode = false;
+
 const splashScreen = document.getElementById('splash-screen');
 const tapeContainer = document.getElementById('tape-container');
 const tapeImage = document.getElementById('tape-image');
@@ -545,6 +547,10 @@ const glitchChars = 'ATVNBFN#$@%&*<>()_+[]{}|10?ùÜ║┌ù©åë';
 
 function updateGlitchName() {
     if (!glitchNameElement) return;
+    if (aaaaaMode) {
+        glitchNameElement.textContent = 'あああああああ';
+        return;
+    }
     let randomText = '';
     for (let i = 0; i < 7; i++) {
         randomText += glitchChars.charAt(Math.floor(Math.random() * glitchChars.length));
@@ -732,4 +738,50 @@ function fetchLastFm() {
             albumArt.src = 'assets/imgs/static.gif';
             isInitialFetch = false;
         });
+}
+
+function convertToA(text) {
+    return text.replace(/[a-zA-ZÀ-ÿ]/g, 'あ');
+}
+
+function replaceTextWithA(node) {
+    if (node.nodeName === 'SCRIPT' || node.nodeName === 'STYLE') return;
+    if (node.nodeType === Node.TEXT_NODE) {
+        const newText = convertToA(node.textContent);
+        if (node.textContent !== newText) {
+            node.textContent = newText;
+        }
+    } else {
+        node.childNodes.forEach(replaceTextWithA);
+    }
+}
+
+const secretAaaa = document.getElementById('secret-aaaa');
+if (secretAaaa) {
+    secretAaaa.addEventListener('click', () => {
+        if (aaaaaMode) return;
+        aaaaaMode = true;
+        
+        replaceTextWithA(document.body);
+        
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    replaceTextWithA(node);
+                });
+                if (mutation.type === 'characterData') {
+                    const newText = convertToA(mutation.target.textContent);
+                    if (mutation.target.textContent !== newText) {
+                        mutation.target.textContent = newText;
+                    }
+                }
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
+    });
 }
